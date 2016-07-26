@@ -34,6 +34,12 @@ int LBackDrive	= 0;
 int ArmPower = 0;
 int last_Btn5U_Value = 0;
 
+//Autonomous Variables
+
+int autoDriveY = 0;
+int autoDriveX = 0;
+int autoDriveYaw = 0;
+
 
 #include "Functions.c"
 #include "Tasks.c"
@@ -68,6 +74,7 @@ void pre_auton()
 
 task autonomous()
 {
+	startTask(autoMotorControl);
   // .....................................................................................
   // Insert user code here.
   // .....................................................................................
@@ -86,13 +93,9 @@ task autonomous()
 
 task usercontrol()
 {
+	startTask(driverMotorControl);
 	while(true){
-		//Motor Controller
-		motor[RightFrontDrive] = motor[RightFrontDrive2] = RFrontDrive;
-		motor[RightBackDrive] = motor[RightBackDrive2]= RBackDrive;
-		motor[LeftFrontDrive] = LFrontDrive;
-		motor[LeftBackDrive] = motor[LeftBackDrive2] = LBackDrive;
-		motor[LeftArm] = motor[RightArm] = ArmPower;
+
 
 
 		//~~~~~~~~~~~~~~~~~~ Drive direction for Truespeed ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

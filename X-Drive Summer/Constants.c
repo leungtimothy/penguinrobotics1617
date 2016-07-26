@@ -1,3 +1,22 @@
+#define MOTOR_MAX 127
+
+
+// Autodrive directions
+
+#define N 0
+#define NE 45
+#define E 90
+#define SE 135
+#define S 180
+#define SW 225
+#define W 270
+#define NW 315
+
+// Calibrate so that driving forward/north is positive on all encoders
+#define FL_ENC_DIR 1
+#define FR_ENC_DIR 1
+#define LL_ENC_DIR 1
+#define LR_ENC_DIR 1
 
 const unsigned int TrueSpeed[128] =
 {
