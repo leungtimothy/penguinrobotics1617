@@ -28,7 +28,7 @@ void drive(int degrees, int power)
 	}
 }
 
-
+/*
 
 // drive function, corrects for rotation
 void drive(int degrees, int power, int encoderTicks) {
@@ -53,6 +53,6 @@ void turn(int degrees, int power)
 
 
 }
-
+*/
 
 // Driver Control Functions
