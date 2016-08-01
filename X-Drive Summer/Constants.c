@@ -12,6 +12,8 @@
 #define W 270
 #define NW 315
 
+#define bob 0
+
 // Calibrate so that driving forward/north is positive on all encoders
 #define FL_ENC_DIR 1
 #define FR_ENC_DIR 1
