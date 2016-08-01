@@ -44,6 +44,8 @@
 #define MAIN_H_
 
 #include <API.h>
+#include "tasks.c"
+
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus
@@ -94,6 +96,7 @@ void initializeIO();
  * will not start. An autonomous mode selection menu like the pre_auton() in other environments
  * can be implemented in this task if desired.
  */
+
 void initialize();
 /**
  * Runs the user operator control code. This function will be started in its own task with the
@@ -113,6 +116,8 @@ void initialize();
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl();
+
+
 
 // End C++ export structure
 #ifdef __cplusplus
