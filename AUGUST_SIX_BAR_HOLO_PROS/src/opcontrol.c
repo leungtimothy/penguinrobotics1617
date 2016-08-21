@@ -36,7 +36,7 @@ void operatorControl() {
 
 		// Get joystick values
 		int joystick_1_1 = joystickGetAnalog(1,1);
-		int joystick_1_3 = joystickGetAnalog(1,2);
+		int joystick_1_3 = joystickGetAnalog(1,3);
 		int joystick_1_4 = joystickGetAnalog(1,4);
 
 		// We should test whether or not we should have different deadzone values for each axis as we are driving a holonomic
@@ -73,17 +73,18 @@ void operatorControl() {
 
 		if(joystickGetDigital(1,6,JOY_UP))
 		{
-
+			setClaw(127);
 		}
 		else if(joystickGetDigital(1,6,JOY_DOWN))
 		{
-
+			setClaw(-127);
 		}
 		else
 		{
-
+			setClaw(0);
 		}
-
+		int heading = gyroGet(gyro);
+		printf("\r\nGyro: %d",heading);
 		delay(20);
 	}
 }

@@ -91,6 +91,8 @@ extern "C" {
 
 #define JOYSTICK_DEADZONE 10
 
+extern Gyro gyro;
+
 //#define AUTO_DEBUG
 
 // A function prototype looks exactly like its declaration, but with a semicolon instead of
@@ -164,7 +166,7 @@ void operatorControl();
  * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
  * being off. If the value is > 127 or < -127, it will be rounded.
  */
-bool setDrive(int motor_location, int value);
+void setDrive(int motor_location, int value);
 
 /**
  * Use this function to set the speed of all of the arm motors.
