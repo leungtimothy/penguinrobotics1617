@@ -44,13 +44,65 @@
 #define MAIN_H_
 
 #include <API.h>
-#include "tasks.c"
-
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+/* Directions for setDrive */
+#define FRONT_LEFT 0
+#define FRONT_RIGHT 1
+#define BACK_LEFT 2
+#define BACK_RIGHT 3
+
+/*  Motor Port and Direction Definitions*/
+
+#define FRONT_LEFT_DRIVE_MOTOR 1
+#define MOTOR_1_DIR -1
+
+#define BACK_RIGHT_DRIVE_MOTOR 2
+#define MOTOR_2_DIR -1
+
+#define BACK_RIGHT_DRIVE_MOTOR_2 3
+#define MOTOR_3_DIR 1
+
+#define LEFT_ARM_MOTOR 4
+#define MOTOR_4_DIR 1
+
+#define BACK_LEFT_DRIVE_MOTOR 5
+#define MOTOR_5_DIR 1
+
+#define RIGHT_ARM_MOTOR 6
+#define MOTOR_6_DIR -1
+
+#define LEFT_ARM_MOTOR_2 7
+#define MOTOR_7_DIR 1
+
+#define MOTOR_8 8
+#define MOTOR_8_DIR 1
+
+#define CLAW 9
+#define MOTOR_9_DIR 1
+
+#define FRONT_RIGHT_DRIVE_MOTOR 10
+#define MOTOR_10_DIR 1
+
+
+/*  End Motor Port and Direction Definitions*/
+
+#define JOYSTICK_DEADZONE 10
+
+/* Analog Sensor Ports */
+
+#define gyroPort 3
+/* End Analog Sensor Ports */
+
+
+/*  variables */
+
+extern Gyro gyro;
 
 //#define AUTO_DEBUG
 
@@ -96,7 +148,6 @@ void initializeIO();
  * will not start. An autonomous mode selection menu like the pre_auton() in other environments
  * can be implemented in this task if desired.
  */
-
 void initialize();
 /**
  * Runs the user operator control code. This function will be started in its own task with the
@@ -117,7 +168,44 @@ void initialize();
  */
 void operatorControl();
 
+/* --- USER FUNCTION PROTOTYPES --- */
 
+/**
+ * Use this function to set the individual drive motors of the holonomic drive.
+ *
+ * @param motor_location Choose one of FRONT_LEFT, FRONT_RIGHT, BACK_LEFT and BACK_RIGHT to set the speed of.
+ * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
+ * being off. If the value is > 127 or < -127, it will be rounded.
+ */
+void setDrive(int motor_location, int value);
+
+/**
+ * Use this function to set the speed of all of the arm motors.
+ *
+ * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
+ * being off. If the value is > 127 or < -127, it will be rounded.
+ *
+ */
+void setArm(int value);
+
+/*
+ * Use this function to ensure that the value being sent to the motors is within the correct range
+ *
+ *@param value of the motor
+ *@return value of the motor between -127 to 127
+ */
+int motorCap(int value);
+
+/**
+ * Use this function to set the speed of the claw motor.
+ *
+ * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
+ * being off. If the value is > 127 or < -127, it will be rounded.
+ *
+ */
+void setClaw(int value);
+
+/* --- END FUNCTION PROTOTYPES --- */
 
 // End C++ export structure
 #ifdef __cplusplus
