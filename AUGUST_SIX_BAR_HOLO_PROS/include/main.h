@@ -100,7 +100,7 @@ extern "C" {
 /* End Analog Sensor Ports */
 
 
-/*  variables */
+/* extern variables */
 
 extern Gyro gyro;
 

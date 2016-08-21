@@ -17,6 +17,8 @@
 
 #include "main.h"
 
+Gyro gyro;
+
  /**
   * Runs pre-initialization code.
   *
@@ -38,5 +40,5 @@ void initializeIO() {
  */
 void initialize() {
 
-	gyro = gyroInit(gyroPort, 0);
+	 	 gyro = gyroInit(3, 0);
 }

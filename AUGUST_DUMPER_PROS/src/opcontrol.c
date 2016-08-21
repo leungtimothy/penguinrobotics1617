@@ -31,7 +31,6 @@
  */
 void operatorControl() {
 
-	analog
 	while (true)
 	{
 
