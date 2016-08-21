@@ -30,7 +30,7 @@ void drive(int degrees, int power)
 
 /*
 
-// drive function, corrects for rotation
+// rive function, corrects for rotation
 void drive(int degrees, int power, int encoderTicks) {
 	int targetGyroReading = SensorValue[Gyro];
 
