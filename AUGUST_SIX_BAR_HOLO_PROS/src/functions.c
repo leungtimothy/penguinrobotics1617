@@ -56,6 +56,36 @@ void setDrive(int motor_location, int value)
 	}
 }
 
+void driveSetChannel(int channel, int value) {
+	value = motorCap(value);
+
+	switch(channel) {
+	case X:
+		driveChannels.powerX = value;
+		break;
+	case Y:
+		driveChannels.powerY = value;
+		break;
+	case YAW:
+		driveChannels.powerYaw = value;
+		break;
+	default:
+		break;
+	}
+
+	setDrive(FRONT_LEFT,  driveChannels.powerY + driveChannels.powerX + driveChannels.powerYaw);
+	setDrive(FRONT_RIGHT, driveChannels.powerY - driveChannels.powerX - driveChannels.powerYaw);
+	setDrive(BACK_LEFT,   driveChannels.powerY - driveChannels.powerX + driveChannels.powerYaw);
+	setDrive(BACK_RIGHT,  driveChannels.powerY + driveChannels.powerX - driveChannels.powerYaw);
+}
+
+void driveStop() {
+	setDrive(FRONT_LEFT,	0);
+	setDrive(FRONT_RIGHT,	0);
+	setDrive(BACK_LEFT,		0);
+	setDrive(BACK_RIGHT,	0);
+}
+
 /**
  * Use this function to set the speed of all of the arm motors.
  *

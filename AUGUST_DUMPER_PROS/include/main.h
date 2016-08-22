@@ -52,10 +52,10 @@ extern "C" {
 
 
 /* Directions for setDrive */
-#define FRONT_LEFT 0
+#define FRONT_LEFT 	0
 #define FRONT_RIGHT 1
-#define BACK_LEFT 2
-#define BACK_RIGHT 3
+#define BACK_LEFT 	2
+#define BACK_RIGHT 	3
 
 /*  Motor Port and Direction Definitions*/
 #define BACK_LEFT_DRIVE_MOTOR 1
@@ -168,6 +168,8 @@ void operatorControl();
  */
 void setDrive(int motor_location, int value);
 
+
+void setDriveChannel(int channel, int value);
 /**
  * Use this function to set the speed of all of the arm motors.
  *

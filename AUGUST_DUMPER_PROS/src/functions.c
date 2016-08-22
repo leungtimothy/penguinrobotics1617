@@ -28,7 +28,7 @@ int motorCap(int value)
  */
 void setDrive(int motor_location, int value)
 {
-	// Verify motor value is bewteen -127 and 127;
+	// Verify motor value is between -127 and 127;
 	value = motorCap(value);
 
 	// Choose the motor port(s) to set
@@ -56,6 +56,8 @@ void setDrive(int motor_location, int value)
 			break;
 	}
 }
+
+
 
 /**
  * Use this function to set the speed of all of the arm motors.

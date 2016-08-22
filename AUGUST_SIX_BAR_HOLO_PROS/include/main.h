@@ -57,6 +57,15 @@ extern "C" {
 #define BACK_LEFT 2
 #define BACK_RIGHT 3
 
+/* Direction Channels */
+#define X 	4
+#define Y 	5
+#define YAW 6
+
+/* Turn Directions */
+#define LEFT 	7
+#define RIGHT 	8
+
 /*  Motor Port and Direction Definitions*/
 
 #define FRONT_LEFT_DRIVE_MOTOR 1
@@ -103,6 +112,12 @@ extern "C" {
 /* extern variables */
 
 extern Gyro gyro;
+
+extern struct DriveChannels {
+	int powerX;
+	int powerY;
+	int powerYaw;
+} driveChannels;
 
 //#define AUTO_DEBUG
 
@@ -178,6 +193,10 @@ void operatorControl();
  * being off. If the value is > 127 or < -127, it will be rounded.
  */
 void setDrive(int motor_location, int value);
+
+// pls help with documentation
+void driveSetChannel(int channel, int value);
+void driveStop(void);
 
 /**
  * Use this function to set the speed of all of the arm motors.
