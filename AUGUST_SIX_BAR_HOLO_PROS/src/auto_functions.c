@@ -1,14 +1,13 @@
 #include "main.h"
 
-
 // ** GYRO TURN **
 // target (in degrees) is added/subtracted from current gyro reading to get a target gyro reading
 // run PD loop to turn to target
 // checks if target has been reached AND is at target for over 250ms before moving on
 void gyroTurn (int turnDirection, int targetDegrees) {
 	// initialize PD loop variables
-	float kp = 0.25; 													// CHANGE CONSTANTS
-	float kd = 0.5;
+	float kp = 2;
+	float kd = 0.15;
 	int error = targetDegrees;
 	int previousError = targetDegrees;
 	int deltaError = 0;
@@ -16,7 +15,7 @@ void gyroTurn (int turnDirection, int targetDegrees) {
 
 	// min/max power
 	int maxPower = 90;
-	int minPower = 20;
+	int minPower = 25;
 
 	// finish check variables
 	int timeDelta = 0;
@@ -33,15 +32,14 @@ void gyroTurn (int turnDirection, int targetDegrees) {
 	else if (turnDirection == 8)
 	 	targetReading -= targetDegrees;
 
-	printf("Gyro Value: %i\r\n", gyroGet(gyro));
+
 
 	// run motors until target is within 1/2 degree certainty
-	while (!isAtTarget)
-	{
-		error = targetReading - gyroGet(gyro); 		// calculate error
-		deltaError = error - previousError;			// calculate deltaError
-		drivePower = error * kp + deltaError * kd;	// calculate PD loop output
-		previousError = error;						// set new previous error
+	while (!isAtTarget) {
+		error = targetReading - gyroGet(gyro);	// calculate error
+		deltaError = error - previousError;						// calculate deltaError
+		drivePower = error * kp + deltaError * kd;				// calculate PD loop output
+		previousError = error;									// set new previous error
 
 		// cap between min and max power
 		drivePower = drivePower < minPower && drivePower > 0 ? minPower : drivePower > -minPower && drivePower < 0 ? -minPower : drivePower;
@@ -49,18 +47,21 @@ void gyroTurn (int turnDirection, int targetDegrees) {
 
 		driveSetChannel(YAW, -drivePower);
 
+		printf("Gyro Value: %d\tError: %d\r\n", gyroGet(gyro), error);
+
 		// check for finish
-		if (abs(error) < 5 && !isTimerOn) 			// if robot is within 0.5 degrees of target and timer flag is off
-		{
-			timeDelta = micros() - timePrevious;
+		if (abs(error) < 1 && !isTimerOn) {			// if robot is within 1 degree of target and timer flag is off
+			timeDelta = millis() - timePrevious;
 			isTimerOn = true;						// set timer flag to indicate timer is running
-			timePrevious = micros();
+			timePrevious = millis();
 		}
-		else if (abs(error) > 5)					// if robot is not within 0.5 degrees of target
+		else if (abs(error) > 1)					// if robot is not within 1 degree of target
 			isTimerOn = false;						// timer flag is reset
 
-		if (timeDelta > 250 && isTimerOn)			// if the timer is over 250ms and timer flag is true
+		if (timeDelta > 1000 && isTimerOn)			// if the timer is over 250ms and timer flag is true
 			isAtTarget = true;						// set boolean to complete while loop
+
+		delay(20);
 	}
 
 	driveStop();

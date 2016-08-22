@@ -113,12 +113,6 @@ extern "C" {
 
 extern Gyro gyro;
 
-extern struct DriveChannels {
-	int powerX;
-	int powerY;
-	int powerYaw;
-} driveChannels;
-
 //#define AUTO_DEBUG
 
 // A function prototype looks exactly like its declaration, but with a semicolon instead of
@@ -224,6 +218,8 @@ int motorCap(int value);
  */
 void setClaw(int value);
 
+
+void gyroTurn(int turnDirection, int targetDegrees);
 /* --- END FUNCTION PROTOTYPES --- */
 
 // End C++ export structure

@@ -84,7 +84,7 @@ void operatorControl() {
 			setClaw(0);
 		}
 		int heading = gyroGet(gyro);
-		printf("\r\nGyro: %d",heading);
+		//printf("\r\nGyro: %d",heading);
 		delay(20);
 	}
 }

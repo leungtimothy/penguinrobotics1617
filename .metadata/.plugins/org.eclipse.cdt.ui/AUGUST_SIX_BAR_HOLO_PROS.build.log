@@ -1,7 +1,7 @@
-19:24:59 **** Clean-only build of configuration Default for project AUGUST_SIX_BAR_HOLO_PROS ****
+23:17:09 **** Clean-only build of configuration Default for project AUGUST_SIX_BAR_HOLO_PROS ****
 make clean 
 rm -f ./bin/output.elf
 rm -rf ./bin
 
-19:24:59 Build Finished (took 164ms)
+23:17:12 Build Finished (took 2s.968ms)
 

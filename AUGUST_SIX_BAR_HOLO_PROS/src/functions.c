@@ -1,5 +1,10 @@
 #include "main.h"
 
+struct DriveChannels {
+	int powerX;
+	int powerY;
+	int powerYaw;
+} driveChannels;
 
 /*
  * Use this function to ensure that the value being sent to the motors is within the correct range
@@ -26,9 +31,8 @@ int motorCap(int value)
  * being off. If the value is > 127 or < -127, it will be rounded.
  *
  */
-void setDrive(int motor_location, int value)
-{
-	// Verify motor value is bewteen -127 and 127;
+void setDrive(int motor_location, int value) {
+	// Verify motor value is between -127 and 127;
 	value = motorCap(value);
 
 	// Choose the motor port(s) to set
