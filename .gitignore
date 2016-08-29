@@ -93,3 +93,6 @@ local.properties
 *.dSYM/
 *.su
 *.xmi
+*.log
+*.pdom
+*.index
