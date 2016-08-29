@@ -106,6 +106,8 @@ void setArm(int value)
 	motorSet(RIGHT_ARM_MOTOR, value*MOTOR_6_DIR);
 }
 
+
+
 /**
  * Use this function to set the speed of the claw motor.
  *
