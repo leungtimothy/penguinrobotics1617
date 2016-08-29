@@ -19,7 +19,7 @@ void armSetState(int state) {
 
 int armGetPosition() {
 	if (isPotFlipped)
-		return abs(4000 - analogRead(armPotPort));
+		return abs(4000 - analogRead(ARM_POT_PORT));
 	else
 		return analogRead(armPotPort);
 }

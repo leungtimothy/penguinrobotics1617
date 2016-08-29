@@ -51,22 +51,26 @@ extern "C" {
 #endif
 
 
-/* Directions for setDrive */
+/* ——— Directions for setDrive ——— */
 #define FRONT_LEFT 0
 #define FRONT_RIGHT 1
 #define BACK_LEFT 2
 #define BACK_RIGHT 3
 
-/* Direction Channels */
+/* ——— Direction Channels ——— */
 #define X 	4
 #define Y 	5
 #define YAW 6
 
-/* Turn Directions */
+/* ——— Turn Directions ——— */
 #define LEFT 	7
 #define RIGHT 	8
 
-/*  Motor Port and Direction Definitions*/
+#define JOYSTICK_DEADZONE 15
+
+#define isPotFlipped true
+
+/* ——— Motor Port and Direction Definitions ——— */
 
 #define FRONT_LEFT_DRIVE_MOTOR 1
 #define MOTOR_1_DIR -1
@@ -99,20 +103,24 @@ extern "C" {
 #define MOTOR_10_DIR 1
 
 
-/*  End Motor Port and Direction Definitions*/
+/* ——— End Motor Port and Direction Definitions ——— */
 
-#define JOYSTICK_DEADZONE 15
+/* ——— Digital Ports ——— */
 
-#define isPotFlipped true
+#define 
 
-/* Analog Sensor Ports */
+/* ——— End Digital Ports ——— */
 
-#define armPotPort 1
 
-#define gyroPort 3
+/* ——— Analog Sensor Ports ——— */
 
-/* End Analog Sensor Ports */
+#define ARM_POT_PORT 1
 
+#define GYRO_PORT 3
+
+/* ——— End Analog Sensor Ports ——— */
+
+#define CLAW_PISTON_PORT 
 
 /* extern variables */
 
