@@ -58,33 +58,49 @@ void operatorControl() {
 		//bool joystickGetDigital(unsigned char joystick, unsigned char buttonGroup, unsigned char button);
 		// * @param buttonGroup one of 5, 6, 7, or 8 to request that button as labelled on the joystick
 		//* @param button one of JOY_UP, JOY_DOWN, JOY_LEFT, or JOY_RIGHT; requesting JOY_LEFT or
+
+
+
+		if (joystickGetDigital(1,7,JOY_UP))
+			armSetState(0);
+
+		if (joystickGetDigital(1,7,JOY_LEFT))
+			armSetState(1);
+
+		if (joystickGetDigital(1,7,JOY_RIGHT))
+			armSetState(2);
+
+		if (joystickGetDigital(1,7,JOY_DOWN))
+			armSetState(3);
+
 		if(joystickGetDigital(1,5,JOY_UP))
 		{
-			setArm(127);
+			armSetValue(127);
 		}
 		else if(joystickGetDigital(1,5,JOY_DOWN))
 		{
-			setArm(-127);
+			armSetValue(-127);
 		}
 		else
 		{
-			setArm(0);
+			armSetValue(0);
 		}
 
 		if(joystickGetDigital(1,6,JOY_UP))
 		{
-			setClaw(127);
+			clawSetValue(127);
 		}
 		else if(joystickGetDigital(1,6,JOY_DOWN))
 		{
-			setClaw(-127);
+			clawSetValue(-127);
 		}
 		else
 		{
-			setClaw(0);
+			clawSetValue(0);
 		}
-		int heading = gyroGet(gyro);
-		//printf("\r\nGyro: %d",heading);
+
+		//printf("\r\nGyro: %d", gyroGet(gyro));
+		printf("\r\nArmPot: %d", analogRead(1));
 		delay(20);
 	}
 }

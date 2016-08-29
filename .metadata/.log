@@ -925,3 +925,9 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.eclipse.ui 4 4 2016-08-21 23:16:58.045
 !MESSAGE Conflicting handlers for edu.purdue.sigbots.ros.eclipse.wizard.commands.updateCommand: {edu.purdue.sigbots.ros.eclipse.wizard.commands.UpgradeProjectCommand} vs {edu.purdue.sigbots.ros.eclipse.wizard.commands.UpgradeProjectCommand}
+
+!ENTRY org.eclipse.ui 4 4 2016-08-28 21:26:11.353
+!MESSAGE Conflicting handlers for edu.purdue.sigbots.ros.eclipse.wizard.commands.updateCommand: {edu.purdue.sigbots.ros.eclipse.wizard.commands.UpgradeProjectCommand} vs {edu.purdue.sigbots.ros.eclipse.wizard.commands.UpgradeProjectCommand}
+
+!ENTRY org.eclipse.ui 4 4 2016-08-28 22:11:04.834
+!MESSAGE Conflicting handlers for edu.purdue.sigbots.ros.eclipse.wizard.commands.updateCommand: {edu.purdue.sigbots.ros.eclipse.wizard.commands.UpgradeProjectCommand} vs {edu.purdue.sigbots.ros.eclipse.wizard.commands.UpgradeProjectCommand}

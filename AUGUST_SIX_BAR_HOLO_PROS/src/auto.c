@@ -28,7 +28,7 @@
 */
 void autonomous() {
 	driveStop();
-	gyroTurn(LEFT, 180);
+	driveGyroTurn(LEFT, 180);
 	wait(3000);
-	gyroTurn(RIGHT, 180);
+	driveGyroTurn(RIGHT, 180);
 }

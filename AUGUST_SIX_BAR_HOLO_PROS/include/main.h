@@ -101,17 +101,24 @@ extern "C" {
 
 /*  End Motor Port and Direction Definitions*/
 
-#define JOYSTICK_DEADZONE 10
+#define JOYSTICK_DEADZONE 15
+
+#define isPotFlipped true
 
 /* Analog Sensor Ports */
 
+#define armPotPort 1
+
 #define gyroPort 3
+
 /* End Analog Sensor Ports */
 
 
 /* extern variables */
 
 extern Gyro gyro;
+
+extern struct Arm arm;
 
 //#define AUTO_DEBUG
 
@@ -188,8 +195,18 @@ void operatorControl();
  */
 void setDrive(int motor_location, int value);
 
-// pls help with documentation
+/**
+ * Use this function to set a drive channel of the holonomic drive.
+ *
+ * @param channel Choose one of X, Y, or YAW to set the speed of.
+ * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
+ * being off. If the value is > 127 or < -127, it will be rounded.
+ */
 void driveSetChannel(int channel, int value);
+
+/**
+ * Use this function to stop all drive motors.
+ */
 void driveStop(void);
 
 /**
@@ -199,7 +216,15 @@ void driveStop(void);
  * being off. If the value is > 127 or < -127, it will be rounded.
  *
  */
-void setArm(int value);
+void armSetValue(int value);
+
+/**
+ * Use this function to set state of the arm.
+ *
+ * @param value int that corresponds to a certain arm state.
+ *
+ */
+void armSetState(int state);
 
 /*
  * Use this function to ensure that the value being sent to the motors is within the correct range
@@ -216,10 +241,19 @@ int motorCap(int value);
  * being off. If the value is > 127 or < -127, it will be rounded.
  *
  */
-void setClaw(int value);
+void clawSetValue(int value);
 
+/**
+ * Use this function command the robot to rotate about its Z axis using the data obtained via the gyroscope.
+ *
+ * @param turnDirection Choose LEFT or RIGHT for direction of turn.
+ * @param targetDegrees the amount of degrees the robot will rotate relative to its original bearing.
+ *
+ */
+void driveGyroTurn(int turnDirection, int targetDegrees);
 
-void gyroTurn(int turnDirection, int targetDegrees);
+// Task prototype
+void armTask(void*);
 /* --- END FUNCTION PROTOTYPES --- */
 
 // End C++ export structure

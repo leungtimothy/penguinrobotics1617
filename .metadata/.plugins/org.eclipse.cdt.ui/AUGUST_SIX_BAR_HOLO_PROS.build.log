@@ -1,7 +1,16 @@
-23:17:09 **** Clean-only build of configuration Default for project AUGUST_SIX_BAR_HOLO_PROS ****
-make clean 
-rm -f ./bin/output.elf
-rm -rf ./bin
+22:22:27 **** Incremental Build of configuration Default for project AUGUST_SIX_BAR_HOLO_PROS ****
+make all 
+CC -I../include -I../src auto.c
+CC -I../include -I../src auto_functions.c
+CC -I../include -I../src auto_routines.c
+CC -I../include -I../src functions.c
+CC -I../include -I../src init.c
+CC -I../include -I../src opcontrol.c
+CC -I../include -I../src tasks.c
+LN ./bin/auto.o ./bin/auto_functions.o ./bin/auto_routines.o ./bin/functions.o ./bin/init.o ./bin/opcontrol.o ./bin/tasks.o ./firmware/libccos.a -lgcc -lm to bin/output.elf
+   text	   data	    bss	    dec	    hex	filename
+  17216	      0	   3968	  21184	   52c0	./bin/output.elf
+arm-none-eabi-objcopy ./bin/output.elf -O binary ./bin/output.bin
 
-23:17:12 Build Finished (took 2s.968ms)
+22:22:28 Build Finished (took 1s.109ms)
 
