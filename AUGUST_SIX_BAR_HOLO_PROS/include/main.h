@@ -103,30 +103,28 @@ extern "C" {
 #define MOTOR_10_DIR 1
 
 
-/* ——— End Motor Port and Direction Definitions ——— */
+/* End Motor Port and Direction Definitions */
 
-/* ——— Digital Ports ——— */
+/* Digital Ports */
 
-#define 
+#define CLAW_PISTON_PORT 4
 
-/* ——— End Digital Ports ——— */
+/* End Digital Ports */
 
 
-/* ——— Analog Sensor Ports ——— */
+/* Analog Sensor Ports */
 
 #define ARM_POT_PORT 1
 
 #define GYRO_PORT 3
 
-/* ——— End Analog Sensor Ports ——— */
+/* End Analog Sensor Ports */
 
-<<<<<<< HEAD
-#define ARM_TOP 2350
-#define ARM_MID 1500
-#define ARM_BOTTOM 525
-=======
-#define CLAW_PISTON_PORT 
->>>>>>> a6d283db0d20fc9bab7a4d74714aca4d3e6c54a2
+
+#define ARM_TOP 1950
+#define ARM_MID 1175
+#define ARM_BOTTOM 125
+
 
 /* extern variables */
 

@@ -14,7 +14,7 @@ int armGetPosition() {
 	if (isPotFlipped)
 		return abs(4000 - analogRead(ARM_POT_PORT));
 	else
-		return analogRead(armPotPort);
+		return analogRead(ARM_POT_PORT);
 }
 
 // armstates located in main.h

@@ -57,17 +57,21 @@ void operatorControl() {
 		else if (joystickGetDigital(1,7,JOY_DOWN))
 			armSetTarget(ARM_BOTTOM);
 
-		if(joystickGetDigital(1,5,JOY_UP))
-			armSetTarget(armGetPosition() + 200);
-		else if(joystickGetDigital(1,5,JOY_DOWN))
-			armSetTarget(armGetPosition() - 200);
+		if (joystickGetDigital(1,5,JOY_UP))
+			armSetValue(127);
+			//armSetTarget(armGetPosition() + 200);
+		else if (joystickGetDigital(1,5,JOY_DOWN))
+			armSetValue(-127);
+			//armSetTarget(armGetPosition() - 200);
+		else
+			armSetValue(0);
 
 
-		if(joystickGetDigital(1,6,JOY_UP))
+		if (joystickGetDigital(1,6,JOY_UP))
 		{
 			clawSetValue(127);
 		}
-		else if(joystickGetDigital(1,6,JOY_DOWN))
+		else if (joystickGetDigital(1,6,JOY_DOWN))
 		{
 			clawSetValue(-127);
 		}
@@ -76,6 +80,7 @@ void operatorControl() {
 			clawSetValue(0);
 		}
 
+		printf("\r\nArm: %d", armGetPosition());
 		//printf("\r\nGyro: %d", gyroGet(gyro));
 		delay(20);
 	}

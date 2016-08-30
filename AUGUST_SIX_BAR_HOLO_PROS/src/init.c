@@ -42,12 +42,7 @@ void initializeIO() {
  * This function must exit relatively promptly, or the operatorControl() and autonomous() tasks will not start. An autonomous mode selection menu like the pre_auton() in other environments can be implemented in this task if desired.
  */
 void initialize() {
-<<<<<<< HEAD
-	taskCreate(armTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
-	gyro = gyroInit(3, 0);
-=======
-	// taskCreate(armTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+	//taskCreate(armTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
 	gyro = gyroInit(GYRO_PORT, 0);
->>>>>>> a6d283db0d20fc9bab7a4d74714aca4d3e6c54a2
 	printf("Robot Initialized\r\n");
 }
