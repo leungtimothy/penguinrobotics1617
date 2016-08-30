@@ -128,3 +128,12 @@ void clawSetValue(int value)
 
 	motorSet(CLAW, value*MOTOR_9_DIR);
 }
+
+int joystickCheckDeadzone(int value) {
+	if (value > 0 && value < JOYSTICK_DEADZONE)
+		return 0;
+	else if (value < 0 && value > -JOYSTICK_DEADZONE)
+		return 0;
+	else
+		return value;
+}

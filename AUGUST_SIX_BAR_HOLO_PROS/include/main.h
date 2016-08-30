@@ -113,6 +113,9 @@ extern "C" {
 
 /* End Analog Sensor Ports */
 
+#define ARM_TOP 2350
+#define ARM_MID 1500
+#define ARM_BOTTOM 525
 
 /* extern variables */
 
@@ -205,6 +208,15 @@ void setDrive(int motor_location, int value);
 void driveSetChannel(int channel, int value);
 
 /**
+ * Use this function command the robot to rotate about its Z axis using the data obtained via the gyroscope.
+ *
+ * @param turnDirection Choose LEFT or RIGHT for direction of turn.
+ * @param targetDegrees the amount of degrees the robot will rotate relative to its original bearing.
+ *
+ */
+void driveGyroTurn(int turnDirection, int targetDegrees);
+
+/**
  * Use this function to stop all drive motors.
  */
 void driveStop(void);
@@ -224,7 +236,15 @@ void armSetValue(int value);
  * @param value int that corresponds to a certain arm state.
  *
  */
-void armSetState(int state);
+void armSetTarget(int state);
+
+/**
+ * Use this function to get the potentiometer value of the arm.
+ *
+ * @return value of potentiometer.
+ *
+ */
+int armGetPosition();
 
 /*
  * Use this function to ensure that the value being sent to the motors is within the correct range
@@ -243,14 +263,8 @@ int motorCap(int value);
  */
 void clawSetValue(int value);
 
-/**
- * Use this function command the robot to rotate about its Z axis using the data obtained via the gyroscope.
- *
- * @param turnDirection Choose LEFT or RIGHT for direction of turn.
- * @param targetDegrees the amount of degrees the robot will rotate relative to its original bearing.
- *
- */
-void driveGyroTurn(int turnDirection, int targetDegrees);
+// needs documentation
+int joystickCheckDeadzone(int value);
 
 // Task prototype
 void armTask(void*);

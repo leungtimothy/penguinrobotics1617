@@ -39,18 +39,10 @@ void operatorControl() {
 		int joystick_1_3 = joystickGetAnalog(1,3);
 		int joystick_1_4 = joystickGetAnalog(1,4);
 
-		// We should test whether or not we should have different deadzone values for each axis as we are driving a holonomic
-		if(joystick_1_1 < JOYSTICK_DEADZONE && joystick_1_1 > -JOYSTICK_DEADZONE)
-			joystick_1_1 = 0;
-		if(joystick_1_3 < JOYSTICK_DEADZONE && joystick_1_3 > -JOYSTICK_DEADZONE)
-			joystick_1_3 = 0;
-		if(joystick_1_4 < JOYSTICK_DEADZONE && joystick_1_4 > -JOYSTICK_DEADZONE)
-			joystick_1_4 = 0;
-
-		setDrive(FRONT_LEFT,  joystick_1_3 + joystick_1_4 + joystick_1_1);
-		setDrive(FRONT_RIGHT, joystick_1_3 - joystick_1_4 - joystick_1_1);
-		setDrive(BACK_LEFT,   joystick_1_3 - joystick_1_4 + joystick_1_1);
-		setDrive(BACK_RIGHT,  joystick_1_3 + joystick_1_4 - joystick_1_1);
+		setDrive(FRONT_LEFT,  joystickCheckDeadzone(joystick_1_3 + joystick_1_4 + joystick_1_1));
+		setDrive(FRONT_RIGHT, joystickCheckDeadzone(joystick_1_3 - joystick_1_4 - joystick_1_1));
+		setDrive(BACK_LEFT,   joystickCheckDeadzone(joystick_1_3 - joystick_1_4 + joystick_1_1));
+		setDrive(BACK_RIGHT,  joystickCheckDeadzone(joystick_1_3 + joystick_1_4 - joystick_1_1));
 
 		/* --- End Holonomic Drive --- */
 
@@ -58,33 +50,18 @@ void operatorControl() {
 		//bool joystickGetDigital(unsigned char joystick, unsigned char buttonGroup, unsigned char button);
 		// * @param buttonGroup one of 5, 6, 7, or 8 to request that button as labelled on the joystick
 		//* @param button one of JOY_UP, JOY_DOWN, JOY_LEFT, or JOY_RIGHT; requesting JOY_LEFT or
-
-
-
 		if (joystickGetDigital(1,7,JOY_UP))
-			armSetState(0);
-
-		if (joystickGetDigital(1,7,JOY_LEFT))
-			armSetState(1);
-
-		if (joystickGetDigital(1,7,JOY_RIGHT))
-			armSetState(2);
-
-		if (joystickGetDigital(1,7,JOY_DOWN))
-			armSetState(3);
+			armSetTarget(ARM_TOP);
+		else if (joystickGetDigital(1,7,JOY_LEFT))
+			armSetTarget(ARM_MID);
+		else if (joystickGetDigital(1,7,JOY_DOWN))
+			armSetTarget(ARM_BOTTOM);
 
 		if(joystickGetDigital(1,5,JOY_UP))
-		{
-			armSetValue(127);
-		}
+			armSetTarget(armGetPosition() + 200);
 		else if(joystickGetDigital(1,5,JOY_DOWN))
-		{
-			armSetValue(-127);
-		}
-		else
-		{
-			armSetValue(0);
-		}
+			armSetTarget(armGetPosition() - 200);
+
 
 		if(joystickGetDigital(1,6,JOY_UP))
 		{
@@ -100,7 +77,6 @@ void operatorControl() {
 		}
 
 		//printf("\r\nGyro: %d", gyroGet(gyro));
-		printf("\r\nArmPot: %d", analogRead(1));
 		delay(20);
 	}
 }
