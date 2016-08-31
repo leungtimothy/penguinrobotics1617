@@ -22,7 +22,6 @@ int motorCap(int value)
 		return value;
 }
 
-
 /**
  * Use this function to set the individual drive motors of the holonomic drive.
  *
@@ -60,6 +59,13 @@ void setDrive(int motor_location, int value) {
 	}
 }
 
+/**
+ * Use this function to set a drive channel of the holonomic drive.
+ *
+ * @param channel Choose one of X, Y, or YAW to set the speed of.
+ * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
+ * being off. If the value is > 127 or < -127, it will be rounded.
+ */
 void driveSetChannel(int channel, int value) {
 	value = motorCap(value);
 
@@ -83,6 +89,9 @@ void driveSetChannel(int channel, int value) {
 	setDrive(BACK_RIGHT,  driveChannels.powerY + driveChannels.powerX - driveChannels.powerYaw);
 }
 
+/**
+ * Use this function to stop all drive motors.
+ */
 void driveStop() {
 	setDrive(FRONT_LEFT,	0);
 	setDrive(FRONT_RIGHT,	0);
@@ -97,7 +106,7 @@ void driveStop() {
  * being off. If the value is > 127 or < -127, it will be rounded.
  *
  */
-void setArm(int value)
+void armSetValue(int value)
 {
 	value = motorCap(value);
 
@@ -113,9 +122,18 @@ void setArm(int value)
  * being off. If the value is > 127 or < -127, it will be rounded.
  *
  */
-void setClaw(int value)
+void clawSetValue(int value)
 {
 	value = motorCap(value);
 
 	motorSet(CLAW, value*MOTOR_9_DIR);
+}
+
+int joystickCheckDeadzone(int value) {
+	if (value > 0 && value < JOYSTICK_DEADZONE)
+		return 0;
+	else if (value < 0 && value > -JOYSTICK_DEADZONE)
+		return 0;
+	else
+		return value;
 }

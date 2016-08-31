@@ -27,6 +27,9 @@ Gyro gyro;
   * The purpose of this function is solely to set the default pin modes (pinMode()) and port states (digitalWrite()) of limit switches, push buttons, and solenoids. It can also safely configure a UART port (usartOpen()) but cannot set up an LCD (lcdInit()).
   */
 void initializeIO() {
+
+    digitalWrite(CLAW_PISTON_PORT, LOW);
+    pinMode(CLAW_PISTON_PORT, OUTPUT);
 }
 
 /**
@@ -39,6 +42,7 @@ void initializeIO() {
  * This function must exit relatively promptly, or the operatorControl() and autonomous() tasks will not start. An autonomous mode selection menu like the pre_auton() in other environments can be implemented in this task if desired.
  */
 void initialize() {
-	gyro = gyroInit(3, 0);
+	//taskCreate(armTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+	gyro = gyroInit(GYRO_PORT, 0);
 	printf("Robot Initialized\r\n");
 }

@@ -1,10 +1,13 @@
 #include "main.h"
 
-// ** GYRO TURN **
-// target (in degrees) is added/subtracted from current gyro reading to get a target gyro reading
-// run PD loop to turn to target
-// checks if target has been reached AND is at target for over 250ms before moving on
-void gyroTurn (int turnDirection, int targetDegrees) {
+/**
+ * Use this function command the robot to rotate about its Z axis using the data obtained via the gyroscope.
+ *
+ * @param turnDirection Choose LEFT or RIGHT for direction of turn.
+ * @param targetDegrees the amount of degrees the robot will rotate relative to its original bearing.
+ *
+ */
+void driveGyroTurn (int turnDirection, int targetDegrees) {
 	// initialize PD loop variables
 	float kp = 2;
 	float kd = 0.15;
