@@ -83,6 +83,16 @@ void operatorControl() {
 		{
 			setClaw(0);
 		}
+
+		if(joystickGetDigital,1,8,JOY_DOWN)
+		{
+
+		}
+		else if(joystickGetDigital,1,8,JOY_RIGHT)
+		{
+
+		}
+
 		int heading = gyroGet(gyro);
 		//printf("\r\nGyro: %d",heading);
 		delay(20);
