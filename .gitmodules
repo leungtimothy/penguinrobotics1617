@@ -4,6 +4,6 @@
 [submodule "AUGUST_DUMPER_PROS/pengulibrary"]
 	path = AUGUST_DUMPER_PROS/pengulibrary
 	url = https://github.com/leungtimothy/pengulibrary
-[submodule "AUGUST_DUMPER_PROS/src/pengulibrary"]
-	path = AUGUST_DUMPER_PROS/src/pengulibrary
+[submodule "AUGUST_DUMPER_PROS/src/--name"]
+	path = AUGUST_DUMPER_PROS/src/--name
 	url = https://github.com/leungtimothy/pengulibrary
