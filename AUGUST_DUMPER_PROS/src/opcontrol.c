@@ -34,8 +34,18 @@ void operatorControl() {
 	while (true)
 	{
 
-		int heading = gyroGet(gyro);
-		printf("\r\nGyro: %d",heading);
+		if(joystickGetDigital(1,5,JOY_UP))
+		{
+			motorSet(2,127);
+		}
+		else if(joystickGetDigital(1,5,JOY_DOWN))
+		{
+			motorSet(2,-127);
+		}
+		else
+		{
+			motorSet(2,0);
+		}
 
 		delay(20);
 	}
