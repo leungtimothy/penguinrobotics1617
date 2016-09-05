@@ -196,6 +196,8 @@ int motorCap(int value);
  */
 void setClaw(int value);
 
+void hey();
+
 /* --- END FUNCTION PROTOTYPES --- */
 
 // End C++ export structure

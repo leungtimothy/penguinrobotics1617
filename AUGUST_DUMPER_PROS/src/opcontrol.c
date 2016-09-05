@@ -33,20 +33,78 @@ void operatorControl() {
 
 	while (true)
 	{
+		int joystick_1_2 = -joystickGetAnalog(1,2);
+		int joystick_1_3 = joystickGetAnalog(1,3);
 
-		if(joystickGetDigital(1,5,JOY_UP))
+		//Wall Drive Side
+		motorSet(9,joystick_1_2);
+
+		//Fence Drive Side
+		motorSet(5,joystick_1_3);
+		motorSet(7,joystick_1_3);
+
+		if(joystickGetDigital(1,6,JOY_UP))
 		{
-			motorSet(2,127);
+			motorSet(4,-127);
+			motorSet(6,127);
 		}
-		else if(joystickGetDigital(1,5,JOY_DOWN))
+		else if(joystickGetDigital(1,6,JOY_DOWN))
 		{
-			motorSet(2,-127);
+			motorSet(4,127);
+			motorSet(6,-127);
 		}
 		else
 		{
-			motorSet(2,0);
+			motorSet(4,0);
+		    motorSet(6,0);
 		}
 
+
+		if(joystickGetDigital(1,5,JOY_UP))
+		{
+			motorSet(1,127);
+			motorSet(8,-127);
+			motorSet(10,-127);
+		}
+		else if(joystickGetDigital(1,5,JOY_DOWN))
+		{
+			motorSet(1,127);
+			motorSet(8,127);
+			motorSet(10,127);
+		}
+		else
+		{
+			motorSet(1,0);
+			motorSet(8,0);
+			motorSet(10,0);
+		}
+
+		if(joystickGetDigital(2,6,JOY_UP))
+			{
+				motorSet(2,127);
+			}
+			else if(joystickGetDigital(2,6,JOY_DOWN))
+			{
+				motorSet(2,-127);
+			}
+			else
+			{
+				motorSet(2,0);
+			}
+
+
+			if(joystickGetDigital(2,5,JOY_UP))
+			{
+				motorSet(3,-127);
+			}
+			else if(joystickGetDigital(2,5,JOY_DOWN))
+			{
+				motorSet(3,127);
+			}
+			else
+			{
+				motorSet(3,0);
+			}
 		delay(20);
 	}
 }
