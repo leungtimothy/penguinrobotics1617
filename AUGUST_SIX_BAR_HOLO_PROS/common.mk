@@ -29,7 +29,7 @@ ASMEXT=s
 CEXT=c
 CPPEXT=cpp
 HEXT=h
-INCLUDE=-I$(ROOT)/include -I$(ROOT)/src
+INCLUDE=-I$(ROOT)/include -I$(ROOT)/src -I$(ROOT)/src/pengulib
 OUTBIN=output.bin
 OUTNAME=output.elf
 
