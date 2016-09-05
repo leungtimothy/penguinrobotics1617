@@ -1,21 +1,5 @@
 #include "main.h"
-
-struct Arm {
-	int target;
-	bool isAtTarget;
-} arm = {0, false};
-
-void armSetTarget(int target) {
-	arm.target = target;
-	arm.isAtTarget = true;
-}
-
-int armGetPosition() {
-	if (isPotFlipped)
-		return abs(4000 - analogRead(ARM_POT_PORT));
-	else
-		return analogRead(ARM_POT_PORT);
-}
+#include "arm.h"
 
 // armstates located in main.h
 void armTask(void *ignore) {

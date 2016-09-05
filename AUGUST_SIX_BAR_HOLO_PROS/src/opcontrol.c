@@ -16,7 +16,8 @@
  ********************************************************************************/
 
 #include "main.h"
-
+#include "arm.h"
+#include "drive.h"
 
 /**
  * Runs the user operator control code.
@@ -33,7 +34,6 @@ void operatorControl() {
 	while (true)
 	{
 		/* --- Holonomic Drive --- */
-
 		// Get joystick values
 		int joystick_1_1 = joystickGetAnalog(1,1);
 		int joystick_1_3 = joystickGetAnalog(1,3);
@@ -106,12 +106,6 @@ void operatorControl() {
 		{
 			digitalWrite(CLAW_PISTON_PORT, LOW);
 		}
-
-
-		int heading = gyroGet(gyro);
-		//printf("\r\nGyro: %d",heading);
-		printf("\r\nArm: %d", armGetPosition());
-		//printf("\r\nGyro: %d", gyroGet(gyro));
 		delay(20);
 	}
 }

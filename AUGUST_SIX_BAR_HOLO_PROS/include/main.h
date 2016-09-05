@@ -44,6 +44,7 @@
 #define MAIN_H_
 
 #include <API.h>
+#include "auto_functions.h"
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus
@@ -51,26 +52,11 @@ extern "C" {
 #endif
 
 
-/* ——— Directions for setDrive ——— */
-#define FRONT_LEFT 0
-#define FRONT_RIGHT 1
-#define BACK_LEFT 2
-#define BACK_RIGHT 3
-
-/* ——— Direction Channels ——— */
-#define X 	4
-#define Y 	5
-#define YAW 6
-
-/* ——— Turn Directions ——— */
-#define LEFT 	7
-#define RIGHT 	8
-
 #define JOYSTICK_DEADZONE 15
 
 #define isPotFlipped true
 
-/* ——— Motor Port and Direction Definitions ——— */
+/* Motor Port and Direction Definitions */
 
 #define FRONT_LEFT_DRIVE_MOTOR 1
 #define MOTOR_1_DIR -1
@@ -196,84 +182,6 @@ void initialize();
  */
 void operatorControl();
 
-/* --- USER FUNCTION PROTOTYPES --- */
-
-/**
- * Use this function to set the individual drive motors of the holonomic drive.
- *
- * @param motor_location Choose one of FRONT_LEFT, FRONT_RIGHT, BACK_LEFT and BACK_RIGHT to set the speed of.
- * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
- * being off. If the value is > 127 or < -127, it will be rounded.
- */
-void setDrive(int motor_location, int value);
-
-/**
- * Use this function to set a drive channel of the holonomic drive.
- *
- * @param channel Choose one of X, Y, or YAW to set the speed of.
- * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
- * being off. If the value is > 127 or < -127, it will be rounded.
- */
-void driveSetChannel(int channel, int value);
-
-/**
- * Use this function command the robot to rotate about its Z axis using the data obtained via the gyroscope.
- *
- * @param turnDirection Choose LEFT or RIGHT for direction of turn.
- * @param targetDegrees the amount of degrees the robot will rotate relative to its original bearing.
- *
- */
-void driveGyroTurn(int turnDirection, int targetDegrees);
-
-/**
- * Use this function to stop all drive motors.
- */
-void driveStop(void);
-
-/**
- * Use this function to set the speed of all of the arm motors.
- *
- * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
- * being off. If the value is > 127 or < -127, it will be rounded.
- *
- */
-void armSetValue(int value);
-
-/**
- * Use this function to set state of the arm.
- *
- * @param value int that corresponds to a certain arm state.
- *
- */
-void armSetTarget(int state);
-
-/**
- * Use this function to get the potentiometer value of the arm.
- *
- * @return value of potentiometer.
- *
- */
-int armGetPosition();
-
-/*
- * Use this function to ensure that the value being sent to the motors is within the correct range
- *
- *@param value of the motor
- *@return value of the motor between -127 to 127
- */
-int motorCap(int value);
-
-/**
- * Use this function to set the speed of the claw motor.
- *
- * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
- * being off. If the value is > 127 or < -127, it will be rounded.
- *
- */
-void clawSetValue(int value);
-
-// needs documentation
-int joystickCheckDeadzone(int value);
 
 // Task prototype
 void armTask(void*);
