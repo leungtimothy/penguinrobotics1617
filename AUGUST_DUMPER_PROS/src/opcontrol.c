@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /**
  * File for operator control code.
  *
@@ -162,4 +161,4 @@ void operatorControl() {
 		delay(20);
 	}
 }
->>>>>>> 6efa0a33342c4508a8ba4041d24145ee6bf06e18
+

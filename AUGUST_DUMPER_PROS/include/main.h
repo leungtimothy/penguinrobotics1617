@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /** @file main.h
  * @brief Header file for global functions
  * 
@@ -414,4 +413,3 @@ void setClaw(int value);
 #endif
 
 #endif
->>>>>>> 6efa0a33342c4508a8ba4041d24145ee6bf06e18
