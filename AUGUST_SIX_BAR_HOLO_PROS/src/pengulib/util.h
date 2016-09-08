@@ -1,3 +1,8 @@
+#ifndef UTIL_H_
+#define UTIL_H_
+
+#include "main.h"
+
 /*
  * Use this function to ensure that the value being sent to the motors is within the correct range
  *
@@ -8,3 +13,5 @@ int motorCap(int value);
 
 // needs documentation
 int joystickCheckDeadzone(int value);
+
+#endif

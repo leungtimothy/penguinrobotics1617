@@ -31,8 +31,7 @@
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl() {
-	while (true)
-	{
+	while (true) {
 		/* --- Holonomic Drive --- */
 		// Get joystick values
 		int joystick_1_1 = joystickGetAnalog(1,1);
@@ -46,10 +45,10 @@ void operatorControl() {
 		if(joystick_1_4 < JOYSTICK_DEADZONE && joystick_1_4 > -JOYSTICK_DEADZONE)
 			joystick_1_4 = 0;
 
-		setDrive(FRONT_LEFT,  joystick_1_3 + joystick_1_4 + joystick_1_1);
-		setDrive(FRONT_RIGHT, joystick_1_3 - joystick_1_4 - joystick_1_1);
-		setDrive(BACK_LEFT,   joystick_1_3 - joystick_1_4 + joystick_1_1);
-		setDrive(BACK_RIGHT,  joystick_1_3 + joystick_1_4 - joystick_1_1);
+		driveSetPower(FRONT_LEFT,  joystick_1_3 + joystick_1_4 + joystick_1_1);
+		driveSetPower(FRONT_RIGHT, joystick_1_3 - joystick_1_4 - joystick_1_1);
+		driveSetPower(BACK_LEFT,   joystick_1_3 - joystick_1_4 + joystick_1_1);
+		driveSetPower(BACK_RIGHT,  joystick_1_3 + joystick_1_4 - joystick_1_1);
 
 		/* --- End Holonomic Drive --- */
 
@@ -58,22 +57,22 @@ void operatorControl() {
 		// * @param buttonGroup one of 5, 6, 7, or 8 to request that button as labelled on the joystick
 		//* @param button one of JOY_UP, JOY_DOWN, JOY_LEFT, or JOY_RIGHT; requesting JOY_LEFT or
 		if (joystickGetDigital(1,7,JOY_UP))
-			armSetTarget(ARM_TOP);
+			armTarget = ARM_TOP;
 		else if (joystickGetDigital(1,7,JOY_LEFT))
-			armSetTarget(ARM_MID);
+			armTarget = ARM_MID;
 		else if (joystickGetDigital(1,7,JOY_DOWN))
-			armSetTarget(ARM_BOTTOM);
+			armTarget = ARM_BOTTOM;
 
 		if (joystickGetDigital(1,5,JOY_UP))
-			armSetValue(127);
+			armSetPower(127);
 			//armSetTarget(armGetPosition() + 200);
 		else if (joystickGetDigital(1,5,JOY_DOWN))
-			armSetValue(-127);
+			armSetPower(-127);
 			//armSetTarget(armGetPosition() - 200);
 		else if (joystickGetDigital(2,7,JOY_UP))
-			armSetValue(10);
+			armSetPower(10);
 		else
-			armSetValue(0);
+			armSetPower(0);
 
 
 		if (joystickGetDigital(1,6,JOY_UP))

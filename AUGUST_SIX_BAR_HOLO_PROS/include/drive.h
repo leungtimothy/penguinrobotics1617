@@ -1,22 +1,26 @@
+#ifndef DRIVE_H_
+#define DRIVE_H_
+
+#include "util.h"
+
 struct DriveChannels {
 	int powerX;
 	int powerY;
 	int powerYaw;
 } driveChannels;
 
-enum Motor_Positions {
+typedef enum Motor_Positions {
 		FRONT_LEFT,
 		FRONT_RIGHT,
 		BACK_LEFT,
 		BACK_RIGHT
-};
+} Motor_Positions;
 
-enum Drive_Channels {
+typedef enum Drive_Channels {
 	X,
 	Y,
 	YAW
-};
-
+} Drive_Channels;
 
 /**
  * Use this function to set the individual drive motors of the holonomic drive.
@@ -25,7 +29,7 @@ enum Drive_Channels {
  * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
  * being off. If the value is > 127 or < -127, it will be rounded.
  */
-void setDrive(enum Motor_Positions motor_location, int value);
+void driveSetPower(Motor_Positions motor_location, int value);
 
 /**
  * Use this function to set a drive channel of the holonomic drive.
@@ -34,9 +38,11 @@ void setDrive(enum Motor_Positions motor_location, int value);
  * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
  * being off. If the value is > 127 or < -127, it will be rounded.
  */
-void driveSetChannel(enum Drive_Channels channel, int value);
+void driveSetChannel(Drive_Channels channel, int value);
 
 /**
  * Use this function to stop all drive motors.
  */
 void driveStop(void);
+
+#endif

@@ -1,6 +1,6 @@
 #include "arm.h"
-#include "main.h"
 #include "util.h"
+#include "pid.h"
 
 /**
  * Use this function to set the speed of all of the arm motors.
@@ -9,18 +9,13 @@
  * being off. If the value is > 127 or < -127, it will be rounded.
  *
  */
-void armSetValue(int value)
+void armSetPower(int value)
 {
 	value = motorCap(value);
 
-	motorSet(LEFT_ARM_MOTOR, value*MOTOR_4_DIR);
-	motorSet(LEFT_ARM_MOTOR_2, value*MOTOR_7_DIR);
-	motorSet(RIGHT_ARM_MOTOR, value*MOTOR_6_DIR);
-}
-
-void armSetTarget(int target) {
-	arm.target = target;
-	arm.isAtTarget = true;
+	motorSet(LEFT_ARM_MOTOR, value * MOTOR_4_DIR);
+	motorSet(LEFT_ARM_MOTOR_2, value * MOTOR_7_DIR);
+	motorSet(RIGHT_ARM_MOTOR, value * MOTOR_6_DIR);
 }
 
 int armGetPosition() {
@@ -41,5 +36,19 @@ void clawSetValue(int value)
 {
 	value = motorCap(value);
 
-	motorSet(CLAW, value*MOTOR_9_DIR);
+	motorSet(CLAW, value * MOTOR_9_DIR);
+}
+
+// armstates located in header file
+void armTask(void *ignore) {
+	PID pidArm;
+	pidInit(pidArm, 0.75, 0, 0, 0, 0);
+
+	while (true) {
+		armSetPower(pidCalculate(pidArm, armGetPosition(), armTarget));
+
+		printf("\r\nError: %d\tPos: %d\tPower: %d", pidArm.error, armGetPosition(), motorGet(RIGHT_ARM_MOTOR));
+
+		delay(20);
+	}
 }

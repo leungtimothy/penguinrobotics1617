@@ -44,7 +44,6 @@
 #define MAIN_H_
 
 #include <API.h>
-#include "auto_functions.h"
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus
@@ -105,11 +104,6 @@ extern "C" {
 #define GYRO_PORT 3
 
 /* End Analog Sensor Ports */
-
-
-#define ARM_TOP 1950
-#define ARM_MID 1175
-#define ARM_BOTTOM 125
 
 
 /* extern variables */
@@ -183,8 +177,7 @@ void initialize();
 void operatorControl();
 
 
-// Task prototype
-void armTask(void*);
+
 /* --- END FUNCTION PROTOTYPES --- */
 
 // End C++ export structure

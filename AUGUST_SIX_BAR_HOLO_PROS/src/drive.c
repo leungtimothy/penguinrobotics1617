@@ -10,7 +10,7 @@
  * being off. If the value is > 127 or < -127, it will be rounded.
  *
  */
-void setDrive(enum Motor_Positions motor_location, int value) {
+void driveSetPower(Motor_Positions motor_location, int value) {
 	// Verify motor value is between -127 and 127;
 	value = motorCap(value);
 
@@ -46,7 +46,7 @@ void setDrive(enum Motor_Positions motor_location, int value) {
  * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
  * being off. If the value is > 127 or < -127, it will be rounded.
  */
-void driveSetChannel(enum Drive_Channels channel, int value) {
+void driveSetChannel(Drive_Channels channel, int value) {
 	value = motorCap(value);
 
 	switch(channel) {
@@ -63,18 +63,18 @@ void driveSetChannel(enum Drive_Channels channel, int value) {
 		break;
 	}
 
-	setDrive(FRONT_LEFT,  driveChannels.powerY + driveChannels.powerX + driveChannels.powerYaw);
-	setDrive(FRONT_RIGHT, driveChannels.powerY - driveChannels.powerX - driveChannels.powerYaw);
-	setDrive(BACK_LEFT,   driveChannels.powerY - driveChannels.powerX + driveChannels.powerYaw);
-	setDrive(BACK_RIGHT,  driveChannels.powerY + driveChannels.powerX - driveChannels.powerYaw);
+	driveSetPower(FRONT_LEFT,  driveChannels.powerY + driveChannels.powerX + driveChannels.powerYaw);
+	driveSetPower(FRONT_RIGHT, driveChannels.powerY - driveChannels.powerX - driveChannels.powerYaw);
+	driveSetPower(BACK_LEFT,   driveChannels.powerY - driveChannels.powerX + driveChannels.powerYaw);
+	driveSetPower(BACK_RIGHT,  driveChannels.powerY + driveChannels.powerX - driveChannels.powerYaw);
 }
 
 /**
  * Use this function to stop all drive motors.
  */
 void driveStop() {
-	setDrive(FRONT_LEFT,	0);
-	setDrive(FRONT_RIGHT,	0);
-	setDrive(BACK_LEFT,		0);
-	setDrive(BACK_RIGHT,	0);
+	driveSetPower(FRONT_LEFT,	0);
+	driveSetPower(FRONT_RIGHT,	0);
+	driveSetPower(BACK_LEFT,	0);
+	driveSetPower(BACK_RIGHT,	0);
 }
