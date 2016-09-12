@@ -3,11 +3,25 @@
 
 #include "main.h"
 
-#define ARM_TOP 1950
-#define ARM_MID 1175
-#define ARM_BOTTOM 125
+#define ARM_TOP 2900
+#define ARM_MID 2100
+#define ARM_BOTTOM 1200
 
-int armTarget;
+typedef enum Arm_Directions {
+		UP,
+		DOWN
+} Arm_Directions;
+
+struct Arm {
+	int target;
+	bool manualSet;
+	Arm_Directions direction;
+} arm;
+
+//int armTarget;
+//
+//bool armManualSet;
+//Arm_Directions armDirection;
 
 /**
  * Use this function to set the speed of all of the arm motors.
@@ -25,6 +39,10 @@ void armSetPower(int value);
  *
  */
 int armGetPosition();
+
+void armSetTarget(int target);
+
+void armSetManual(Arm_Directions dir);
 
 /**
  * Use this function to set the speed of the claw motor.

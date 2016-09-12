@@ -17,6 +17,7 @@
 
 #include "main.h"
 #include "arm.h"
+#include "util.h"
 #include "drive.h"
 
 /**
@@ -57,22 +58,16 @@ void operatorControl() {
 		// * @param buttonGroup one of 5, 6, 7, or 8 to request that button as labelled on the joystick
 		//* @param button one of JOY_UP, JOY_DOWN, JOY_LEFT, or JOY_RIGHT; requesting JOY_LEFT or
 		if (joystickGetDigital(1,7,JOY_UP))
-			armTarget = ARM_TOP;
+			armSetTarget(ARM_TOP);
 		else if (joystickGetDigital(1,7,JOY_LEFT))
-			armTarget = ARM_MID;
+			armSetTarget(ARM_MID);
 		else if (joystickGetDigital(1,7,JOY_DOWN))
-			armTarget = ARM_BOTTOM;
+			armSetTarget(ARM_BOTTOM);
 
 		if (joystickGetDigital(1,5,JOY_UP))
-			armSetPower(127);
-			//armSetTarget(armGetPosition() + 200);
+			armSetManual(UP);
 		else if (joystickGetDigital(1,5,JOY_DOWN))
-			armSetPower(-127);
-			//armSetTarget(armGetPosition() - 200);
-		else if (joystickGetDigital(2,7,JOY_UP))
-			armSetPower(10);
-		else
-			armSetPower(0);
+			armSetManual(DOWN);
 
 
 		if (joystickGetDigital(1,6,JOY_UP))

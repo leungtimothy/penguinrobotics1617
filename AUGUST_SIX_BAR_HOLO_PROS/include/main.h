@@ -50,10 +50,7 @@
 extern "C" {
 #endif
 
-
-#define JOYSTICK_DEADZONE 15
-
-#define isPotFlipped true
+#define isPotFlipped false
 
 /* Motor Port and Direction Definitions */
 
