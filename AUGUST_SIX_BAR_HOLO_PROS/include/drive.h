@@ -3,6 +3,9 @@
 
 #include "util.h"
 
+#define FORWARD 1
+#define BACKWARD -1
+
 struct DriveChannels {
 	int powerX;
 	int powerY;

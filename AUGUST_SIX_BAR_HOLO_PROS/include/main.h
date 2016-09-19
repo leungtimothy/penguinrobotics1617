@@ -50,7 +50,8 @@
 extern "C" {
 #endif
 
-#define isPotFlipped false
+#define isArmPotFlipped false
+#define isClawPotFlipped false
 
 /* Motor Port and Direction Definitions */
 
@@ -97,6 +98,7 @@ extern "C" {
 /* Analog Sensor Ports */
 
 #define ARM_POT_PORT 1
+#define CLAW_POT_PORT 2
 
 #define GYRO_PORT 3
 

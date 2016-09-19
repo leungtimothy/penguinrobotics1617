@@ -5,11 +5,14 @@
 
 #define ARM_TOP 2900
 #define ARM_MID 2100
-#define ARM_BOTTOM 1200
+#define ARM_BOTTOM 1150
 
-typedef enum Arm_Directions {
+#define ARM_THRESHOLD 10
+
+typedef enum {
 		UP,
-		DOWN
+		DOWN,
+		AUTO
 } Arm_Directions;
 
 struct Arm {
@@ -44,14 +47,6 @@ void armSetTarget(int target);
 
 void armSetManual(Arm_Directions dir);
 
-/**
- * Use this function to set the speed of the claw motor.
- *
- * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
- * being off. If the value is > 127 or < -127, it will be rounded.
- *
- */
-void clawSetValue(int value);
 
 /*
  * Arm task function.

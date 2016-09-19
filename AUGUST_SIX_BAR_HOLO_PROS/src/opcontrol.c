@@ -17,6 +17,7 @@
 
 #include "main.h"
 #include "arm.h"
+#include "claw.h"
 #include "util.h"
 #include "drive.h"
 
@@ -57,31 +58,29 @@ void operatorControl() {
 		//bool joystickGetDigital(unsigned char joystick, unsigned char buttonGroup, unsigned char button);
 		// * @param buttonGroup one of 5, 6, 7, or 8 to request that button as labelled on the joystick
 		//* @param button one of JOY_UP, JOY_DOWN, JOY_LEFT, or JOY_RIGHT; requesting JOY_LEFT or
-		if (joystickGetDigital(1,7,JOY_UP))
+		if (joystickGetDigital(1,8,JOY_UP))
 			armSetTarget(ARM_TOP);
-		else if (joystickGetDigital(1,7,JOY_LEFT))
+		else if (joystickGetDigital(1,8,JOY_RIGHT))
 			armSetTarget(ARM_MID);
-		else if (joystickGetDigital(1,7,JOY_DOWN))
+		else if (joystickGetDigital(1,8,JOY_DOWN))
 			armSetTarget(ARM_BOTTOM);
 
 		if (joystickGetDigital(1,5,JOY_UP))
 			armSetManual(UP);
 		else if (joystickGetDigital(1,5,JOY_DOWN))
 			armSetManual(DOWN);
+		else
+			armSetManual(AUTO);
 
 
 		if (joystickGetDigital(1,6,JOY_UP))
-		{
-			clawSetValue(127);
-		}
+			clawSetting(OPEN);
 		else if (joystickGetDigital(1,6,JOY_DOWN))
-		{
-			clawSetValue(-127);
-		}
+			clawSetting(CLOSE);
 		else
-		{
-			clawSetValue(0);
-		}
+			clawSetting(HOLD);
+
+
 
 		if(joystickGetDigital(2,8,JOY_DOWN))
 		{

@@ -19,15 +19,13 @@ void armSetPower(int value)
 }
 
 int armGetPosition() {
-	if (isPotFlipped)
+	if (isArmPotFlipped)
 		return abs(4000 - analogRead(ARM_POT_PORT));
 	else
 		return analogRead(ARM_POT_PORT);
 }
 
 void armSetTarget(int target) {
-	arm.manualSet = false;
-
 	if (target > ARM_TOP)
 		arm.target = ARM_TOP;
 	else if (target < ARM_BOTTOM)
@@ -37,43 +35,34 @@ void armSetTarget(int target) {
 }
 
 void armSetManual(Arm_Directions dir) {
-	arm.manualSet = true;
-	arm.direction = dir;
+	if (dir == AUTO)
+		arm.manualSet = false;
+	else {
+		arm.manualSet = true;
+		arm.direction = dir;
+	}
 }
 
-/**
- * Use this function to set the speed of the claw motor.
- *
- * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
- * being off. If the value is > 127 or < -127, it will be rounded.
- *
- */
-void clawSetValue(int value)
-{
-	value = motorCap(value);
 
-	motorSet(CLAW, value * MOTOR_9_DIR);
-}
 
 // armstates located in header file
 void armTask(void *ignore) {
 	PID pidArm;
-	pidInit(pidArm, 0.5, 0, 0, 0, 0);
+	pidInit(&pidArm, 0.3, 0, 0, 0, 0);
 
+	armSetTarget(armGetPosition());
 	while (true) {
 		if (arm.manualSet) {
 			armSetPower(arm.direction == UP ? 127 : -127);
-			armSetTarget(armGetPosition());
+			armSetTarget(arm.direction == UP ? armGetPosition() + 50 : armGetPosition() - 50);
 		} else {
-			int PID = pidCalculate(pidArm, armGetPosition(), arm.target);
-			armSetPower(PID);
-			printf(" PID: %d", PID);
+			int PID = pidCalculate(&pidArm, armGetPosition(), arm.target);
+			if (abs(PID) > ARM_THRESHOLD)
+				armSetPower(PID);
 		}
 
-		printf("\r\nTarget: %d\tPos: %d\tPower: %d", arm.target, armGetPosition(), motorGet(RIGHT_ARM_MOTOR));
+		//printf("\r\nTarget: %d\tPos: %d\tPower: %d", arm.target, armGetPosition(), motorGet(RIGHT_ARM_MOTOR));
 
 		delay(20);
-
-
 	}
 }

@@ -15,27 +15,26 @@ void driveSetPower(Motor_Positions motor_location, int value) {
 	value = motorCap(value);
 
 	// Choose the motor port(s) to set
-	switch(motor_location)
-	{
-		case FRONT_LEFT:
-			motorSet(FRONT_LEFT_DRIVE_MOTOR,value*MOTOR_1_DIR);
-			break;
+	switch (motor_location) {
+	case FRONT_LEFT:
+		motorSet(FRONT_LEFT_DRIVE_MOTOR, value * MOTOR_1_DIR);
+		break;
 
-		case FRONT_RIGHT:
-			motorSet(FRONT_RIGHT_DRIVE_MOTOR,value*MOTOR_10_DIR);
-			break;
+	case FRONT_RIGHT:
+		motorSet(FRONT_RIGHT_DRIVE_MOTOR, value * MOTOR_10_DIR);
+		break;
 
-		case BACK_LEFT:
-			motorSet(BACK_LEFT_DRIVE_MOTOR,value*MOTOR_5_DIR);
-			break;
+	case BACK_LEFT:
+		motorSet(BACK_LEFT_DRIVE_MOTOR, value * MOTOR_5_DIR);
+		break;
 
-		case BACK_RIGHT:
-			motorSet(BACK_RIGHT_DRIVE_MOTOR,value*MOTOR_2_DIR);
-			motorSet(BACK_RIGHT_DRIVE_MOTOR_2,value*MOTOR_3_DIR);
-			break;
+	case BACK_RIGHT:
+		motorSet(BACK_RIGHT_DRIVE_MOTOR, value * MOTOR_2_DIR);
+		motorSet(BACK_RIGHT_DRIVE_MOTOR_2, value * MOTOR_3_DIR);
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
@@ -49,7 +48,7 @@ void driveSetPower(Motor_Positions motor_location, int value) {
 void driveSetChannel(Drive_Channels channel, int value) {
 	value = motorCap(value);
 
-	switch(channel) {
+	switch (channel) {
 	case X:
 		driveChannels.powerX = value;
 		break;
@@ -63,18 +62,26 @@ void driveSetChannel(Drive_Channels channel, int value) {
 		break;
 	}
 
-	driveSetPower(FRONT_LEFT,  driveChannels.powerY + driveChannels.powerX + driveChannels.powerYaw);
-	driveSetPower(FRONT_RIGHT, driveChannels.powerY - driveChannels.powerX - driveChannels.powerYaw);
-	driveSetPower(BACK_LEFT,   driveChannels.powerY - driveChannels.powerX + driveChannels.powerYaw);
-	driveSetPower(BACK_RIGHT,  driveChannels.powerY + driveChannels.powerX - driveChannels.powerYaw);
+	driveSetPower(FRONT_LEFT,
+			driveChannels.powerY + driveChannels.powerX
+					+ driveChannels.powerYaw);
+	driveSetPower(FRONT_RIGHT,
+			driveChannels.powerY - driveChannels.powerX
+					- driveChannels.powerYaw);
+	driveSetPower(BACK_LEFT,
+			driveChannels.powerY - driveChannels.powerX
+					+ driveChannels.powerYaw);
+	driveSetPower(BACK_RIGHT,
+			driveChannels.powerY + driveChannels.powerX
+					- driveChannels.powerYaw);
 }
 
 /**
  * Use this function to stop all drive motors.
  */
 void driveStop() {
-	driveSetPower(FRONT_LEFT,	0);
-	driveSetPower(FRONT_RIGHT,	0);
-	driveSetPower(BACK_LEFT,	0);
-	driveSetPower(BACK_RIGHT,	0);
+	driveSetPower(FRONT_LEFT, 0);
+	driveSetPower(FRONT_RIGHT, 0);
+	driveSetPower(BACK_LEFT, 0);
+	driveSetPower(BACK_RIGHT, 0);
 }
