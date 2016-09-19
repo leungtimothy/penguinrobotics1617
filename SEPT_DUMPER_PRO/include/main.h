@@ -53,13 +53,13 @@ extern "C" {
 //#define AUTO_DEBUG
 
 #define rightArm 1
-#define rightArmD 1
+#define rightArmD -1
 
 #define rightFork 2
 #define rightForkD 1
 
 #define leftFork 3
-#define leftForkD 1
+#define leftForkD -1
 
 #define rightStrafe 4
 #define rightStrafeD 1
@@ -68,40 +68,26 @@ extern "C" {
 #define rightFrontD 1
 
 #define leftStrafe 6
-#define leftStrafeD 1
+#define leftStrafeD -1
 
 #define rightBack 7
 #define rightBackD 1
 
 #define leftArm 8
-#define leftArmD 1
+#define leftArmD -1
 
 #define leftDriveFB 9
-#define leftDriveFBD 1
+#define leftDriveFBD -1
 
 #define rightArm2 10
-#define rightArm2D 1
+#define rightArm2D -1
 
 #define deadZone 12
 
-//~~~~~~~~~~~ Functions to control motors ~~~~~~~~~
-void rightDrive(int speed){
-	motorSet(rightFront*rightFrontD, speed);
-	motorSet(rightBack*rightBackD, speed);
-}
-
-void leftDrive(int speed){
-	motorSet(rightFront*rightFrontD, speed);
-	motorSet(rightBack*rightBackD, speed);
-}
-
-void armSetValue(int speed){
-	motorSet(rightArm*rightArmD, speed);
-	motorSet(rightArm2*rightArm2D, speed);
-	motorSet(leftArm*leftArmD, speed);
-	//motorSet(rightArm*rightArmD, speed);
-}
-
+void rightDrive(int speed);
+void leftDrive(int speed);
+void armSetValue(int speed);
+void strafe(int speed);
 
 
 // A function prototype looks exactly like its declaration, but with a semicolon instead of
@@ -165,6 +151,7 @@ void initialize();
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl();
+
 
 // End C++ export structure
 #ifdef __cplusplus

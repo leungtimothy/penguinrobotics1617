@@ -17,7 +17,6 @@
 
 #include "main.h"
 
-
 /**
  * Runs the user operator control code.
  *
@@ -34,38 +33,44 @@ void operatorControl() {
 	{
 		//~~~~~~~~~~~~~~~~~~~ Drive ~~~~~~~~~~~~~~~~~~~~~
 		if (abs(joystickGetAnalog(1,3))< deadZone)
-			rightDrive = 0;
+			rightDrive(0);
 		else
 			rightDrive(joystickGetAnalog(1,3));
 
 		if (abs(joystickGetAnalog(1,2))< deadZone)
-			leftDrive = 0;
+			leftDrive(0);
 		else
 			leftDrive(joystickGetAnalog(1,2));
 
+		if(joystickGetDigital(1,8,JOY_DOWN))
+			strafe(127);
+		else if(joystickGetDigital(1,8,JOY_UP))
+			strafe(-127);
+		else
+			strafe(0);
 		//~~~~~~~~~~~~~~~~~~~~ ARM ~~~~~~~~~~~~~~~~~~
 		if (joystickGetDigital(1,6,JOY_UP))
 			armSetValue(127);
 		else if (joystickGetDigital(1,6,JOY_DOWN))
 			armSetValue(-127);
-		else if (joystickGetDigital(2,7,JOY_UP))
+		else if (joystickGetDigital(2,8,JOY_DOWN))
 			armSetValue(10);
 		else
 			armSetValue(0);
 		//~~~~~~~~~~~~~~~~~~~~~ Hook ~~~~~~~~~~~~~~~~~~
-		 if(joystickGetDigital(2,6,JOY_UP))
-			 motorSet(rightFork*rightForkD, 127);
-		 else if(joystickGetDigital(2,6,JOY_DOWN))
-			 motorSet(rightFork*rightForkD, -127);
-		 else
-			 motorSet(rightFork*rightForkD, 0);
-
 		 if(joystickGetDigital(2,5,JOY_UP))
-			 motorSet(leftFork*leftForkD, 127);
+			 motorSet(rightFork, 127*rightForkD);
 		 else if(joystickGetDigital(2,5,JOY_DOWN))
-			 motorSet(leftFork*leftForkD, -127);
+			 motorSet(rightFork, -127*rightForkD);
 		 else
-			 motorSet(leftFork*leftForkD, 0);
+			 motorSet(rightFork, 0);
+
+		 if(joystickGetDigital(2,6,JOY_UP))
+			 motorSet(leftFork, 127*leftForkD);
+		 else if(joystickGetDigital(2,6,JOY_DOWN))
+			 motorSet(leftFork, -127*leftForkD);
+		 else
+			 motorSet(leftFork, 0);
 
 		delay(25);
 	}
