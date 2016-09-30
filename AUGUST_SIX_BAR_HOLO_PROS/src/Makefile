@@ -15,6 +15,7 @@ ASMOBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(ASMSRC:.$(ASMEXT)=.o))
 HEADERS:=$(wildcard *.$(HEXT))
 ### Special section for Cortex projects ###
 HEADERS_2:=$(wildcard ../include/*.$(HEXT))
+HEADERS_3:=$(wildcard ../pengulib/*.$(HEXT))
 ### End special section ###
 CSRC=$(wildcard *.$(CEXT))
 COBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(CSRC:.$(CEXT)=.o))
@@ -39,11 +40,11 @@ $(ASMOBJ): $(BINDIR)/%.o: %.$(ASMEXT)
 ### Special section for Cortex projects ###
 
 # Object management
-$(COBJ): $(BINDIR)/%.o: %.$(CEXT) $(HEADERS) $(HEADERS_2)
+$(COBJ): $(BINDIR)/%.o: %.$(CEXT) $(HEADERS) $(HEADERS_2) $(HEADERS_3)
 	@echo CC $(INCLUDE) $<
 	@$(CC) $(INCLUDE) $(CFLAGS) -o $@ $<
 
-$(CPPOBJ): $(BINDIR)/%.o: %.$(CPPEXT) $(HEADERS) $(HEADERS_2)
+$(CPPOBJ): $(BINDIR)/%.o: %.$(CPPEXT) $(HEADERS) $(HEADERS_2) $(HEADERS_3)
 	@echo CPC $(INCLUDE) $<
 	@$(CPPCC) $(INCLUDE) $(CPPFLAGS) -o $@ $<
 
