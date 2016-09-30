@@ -32,15 +32,15 @@ void operatorControl() {
 	while (true)
 	{
 		//~~~~~~~~~~~~~~~~~~~ Drive ~~~~~~~~~~~~~~~~~~~~~
-		if (abs(joystickGetAnalog(1,3))< deadZone)
+		if (abs(joystickGetAnalog(1,2))< deadZone)
 			rightDrive(0);
 		else
-			rightDrive(joystickGetAnalog(1,3));
+			rightDrive(joystickGetAnalog(1,2));
 
-		if (abs(joystickGetAnalog(1,2))< deadZone)
+		if (abs(joystickGetAnalog(1,3))< deadZone)
 			leftDrive(0);
 		else
-			leftDrive(joystickGetAnalog(1,2));
+			leftDrive(joystickGetAnalog(1,3));
 
 		if(joystickGetDigital(1,8,JOY_DOWN))
 			strafe(127);

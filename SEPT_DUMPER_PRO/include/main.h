@@ -52,6 +52,39 @@ extern "C" {
 
 //#define AUTO_DEBUG
 
+#define leftArmT 1
+#define leftArmTD -1
+
+#define leftArmB 10
+#define leftArmBD -1
+
+#define rightArm 9
+#define rightArmD -1
+
+#define rightDrive1 8
+#define rightDriveD -1
+
+#define leftDriveF 6
+#define leftDriveFD 1
+
+#define leftDriveB 4
+#define leftDriveBD 1
+
+#define rightFork 2
+#define rightForkD 1
+
+#define leftFork 3
+#define leftForkD -1
+
+#define rightStrafe 7
+#define rightStrafeD 1
+
+#define leftStrafe 5
+#define leftStrafeD 1
+
+
+/*
+
 #define rightArm 1
 #define rightArmD -1
 
@@ -81,6 +114,8 @@ extern "C" {
 
 #define rightArm2 10
 #define rightArm2D -1
+
+*/
 
 #define deadZone 12
 
