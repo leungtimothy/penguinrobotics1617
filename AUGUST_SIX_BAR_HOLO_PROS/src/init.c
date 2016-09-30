@@ -16,6 +16,8 @@
  */
 
 #include "main.h"
+#include "arm.h"
+#include "claw.h"
 
 Gyro gyro;
 
@@ -42,7 +44,7 @@ void initializeIO() {
  * This function must exit relatively promptly, or the operatorControl() and autonomous() tasks will not start. An autonomous mode selection menu like the pre_auton() in other environments can be implemented in this task if desired.
  */
 void initialize() {
-	//taskCreate(armTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+	taskCreate(armTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+	taskCreate(clawTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
 	gyro = gyroInit(GYRO_PORT, 0);
-	printf("Robot Initialized\r\n");
 }

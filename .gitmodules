@@ -1,6 +1,6 @@
 [submodule "AUGUST_DUMPER_PROS/src/pengulib"]
 	path = AUGUST_DUMPER_PROS/src/pengulib
 	url = https://github.com/leungtimothy/pengulibrary
-[submodule "AUGUST_SIX_BAR_HOLO_PROS/src/pengulib"]
-	path = AUGUST_SIX_BAR_HOLO_PROS/src/pengulib
+[submodule "AUGUST_SIX_BAR_HOLO_PROS/pengulib"]
+	path = AUGUST_SIX_BAR_HOLO_PROS/pengulib
 	url = https://github.com/leungtimothy/pengulibrary

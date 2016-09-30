@@ -16,7 +16,10 @@
  ********************************************************************************/
 
 #include "main.h"
-
+#include "arm.h"
+#include "claw.h"
+#include "util.h"
+#include "drive.h"
 
 /**
  * Runs the user operator control code.
@@ -30,10 +33,8 @@
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl() {
-	while (true)
-	{
+	while (true) {
 		/* --- Holonomic Drive --- */
-
 		// Get joystick values
 		int joystick_1_1 = joystickGetAnalog(1,1);
 		int joystick_1_3 = joystickGetAnalog(1,3);
@@ -46,10 +47,10 @@ void operatorControl() {
 		if(joystick_1_4 < JOYSTICK_DEADZONE && joystick_1_4 > -JOYSTICK_DEADZONE)
 			joystick_1_4 = 0;
 
-		setDrive(FRONT_LEFT,  joystick_1_3 + joystick_1_4 + joystick_1_1);
-		setDrive(FRONT_RIGHT, joystick_1_3 - joystick_1_4 - joystick_1_1);
-		setDrive(BACK_LEFT,   joystick_1_3 - joystick_1_4 + joystick_1_1);
-		setDrive(BACK_RIGHT,  joystick_1_3 + joystick_1_4 - joystick_1_1);
+		driveSetPower(FRONT_LEFT,  joystick_1_3 + joystick_1_4 + joystick_1_1);
+		driveSetPower(FRONT_RIGHT, joystick_1_3 - joystick_1_4 - joystick_1_1);
+		driveSetPower(BACK_LEFT,   joystick_1_3 - joystick_1_4 + joystick_1_1);
+		driveSetPower(BACK_RIGHT,  joystick_1_3 + joystick_1_4 - joystick_1_1);
 
 		/* --- End Holonomic Drive --- */
 
@@ -57,37 +58,29 @@ void operatorControl() {
 		//bool joystickGetDigital(unsigned char joystick, unsigned char buttonGroup, unsigned char button);
 		// * @param buttonGroup one of 5, 6, 7, or 8 to request that button as labelled on the joystick
 		//* @param button one of JOY_UP, JOY_DOWN, JOY_LEFT, or JOY_RIGHT; requesting JOY_LEFT or
-		if (joystickGetDigital(1,7,JOY_UP))
+		if (joystickGetDigital(1,8,JOY_UP))
 			armSetTarget(ARM_TOP);
-		else if (joystickGetDigital(1,7,JOY_LEFT))
+		else if (joystickGetDigital(1,8,JOY_RIGHT))
 			armSetTarget(ARM_MID);
-		else if (joystickGetDigital(1,7,JOY_DOWN))
+		else if (joystickGetDigital(1,8,JOY_DOWN))
 			armSetTarget(ARM_BOTTOM);
 
 		if (joystickGetDigital(1,5,JOY_UP))
-			armSetValue(127);
-			//armSetTarget(armGetPosition() + 200);
+			armSetManual(UP);
 		else if (joystickGetDigital(1,5,JOY_DOWN))
-			armSetValue(-127);
-			//armSetTarget(armGetPosition() - 200);
-		else if (joystickGetDigital(2,7,JOY_UP))
-			armSetValue(10);
+			armSetManual(DOWN);
 		else
-			armSetValue(0);
+			armSetManual(AUTO);
 
 
 		if (joystickGetDigital(1,6,JOY_UP))
-		{
-			clawSetValue(127);
-		}
+			clawSetting(OPEN);
 		else if (joystickGetDigital(1,6,JOY_DOWN))
-		{
-			clawSetValue(-127);
-		}
+			clawSetting(CLOSE);
 		else
-		{
-			clawSetValue(0);
-		}
+			clawSetting(HOLD);
+
+
 
 		if(joystickGetDigital(2,8,JOY_DOWN))
 		{
@@ -106,12 +99,6 @@ void operatorControl() {
 		{
 			digitalWrite(CLAW_PISTON_PORT, LOW);
 		}
-
-
-		int heading = gyroGet(gyro);
-		//printf("\r\nGyro: %d",heading);
-		printf("\r\nArm: %d", armGetPosition());
-		//printf("\r\nGyro: %d", gyroGet(gyro));
 		delay(20);
 	}
 }
