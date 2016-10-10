@@ -1311,7 +1311,7 @@ void taskDelay(const unsigned long msToDelay);
  * This function should be used by cyclical tasks to ensure a constant execution frequency.
  * While taskDelay() specifies a wake time relative to the time at which the function is
  * called, taskDelayUntil() specifies the absolute future time at which it wishes to unblock.
- * Calling taskDelayUntil with the same cycleTime parameter value in a loop, with 
+ * Calling taskDelayUntil with the same cycleTime parameter value in a loop, with
  * previousWakeTime referring to a local variable initialized to millis(), will cause the
  * loop to execute with a fixed period.
  *

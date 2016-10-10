@@ -1,6 +1,6 @@
 /** @file main.h
  * @brief Header file for global functions
- * 
+ *
  * Any experienced C or C++ programmer knows the importance of header files. For those who
  * do not, a header file allows multiple files to reference functions in other files without
  * necessarily having to see the code (and therefore causing a multiple definition). To make
@@ -50,15 +50,17 @@
 extern "C" {
 #endif
 
-#define isArmPotFlipped false
+#define JOYSTICK_DEADZONE 20
+
+#define isArmPotFlipped true
 #define isClawPotFlipped false
 
 /* Motor Port and Direction Definitions */
 
-#define FRONT_LEFT_DRIVE_MOTOR 1
-#define MOTOR_1_DIR -1
+#define FRONT_LEFT_DRIVE_MOTOR_1 1
+#define MOTOR_1_DIR 1
 
-#define BACK_RIGHT_DRIVE_MOTOR 2
+#define BACK_RIGHT_DRIVE_MOTOR_1 2
 #define MOTOR_2_DIR -1
 
 #define BACK_RIGHT_DRIVE_MOTOR_2 3
@@ -70,20 +72,20 @@ extern "C" {
 #define BACK_LEFT_DRIVE_MOTOR 5
 #define MOTOR_5_DIR 1
 
-#define RIGHT_ARM_MOTOR 6
+#define FRONT_RIGHT_DRIVE_MOTOR 6
 #define MOTOR_6_DIR -1
 
-#define LEFT_ARM_MOTOR_2 7
-#define MOTOR_7_DIR 1
+#define RIGHT_ARM_MOTOR_1 7
+#define MOTOR_7_DIR -1
 
-#define MOTOR_8 8
-#define MOTOR_8_DIR 1
+#define RIGHT_ARM_MOTOR_2 8
+#define MOTOR_8_DIR -1
 
 #define CLAW 9
 #define MOTOR_9_DIR 1
 
-#define FRONT_RIGHT_DRIVE_MOTOR 10
-#define MOTOR_10_DIR 1
+#define FRONT_LEFT_DRIVE_MOTOR_2 10
+#define MOTOR_10_DIR -1
 
 
 /* End Motor Port and Direction Definitions */
@@ -108,6 +110,10 @@ extern "C" {
 /* extern variables */
 
 extern Gyro gyro;
+extern Encoder FR_encoder;
+extern Encoder FL_encoder;
+extern Encoder BR_encoder;
+extern Encoder BL_encoder;
 
 extern struct Arm arm;
 

@@ -16,6 +16,7 @@
 ********************************************************************************/
 
 #include "main.h"
+#include "auto_functions.h"
 
 /**
 * Runs the user autonomous code.
@@ -27,4 +28,7 @@
 * The autonomous task may exit, unlike operatorControl() which should never exit. If it does so, the robot will await a switch to another mode or disable/enable cycle.
 */
 void autonomous() {
+
+ driveHolo(1000, 60);
+
 }

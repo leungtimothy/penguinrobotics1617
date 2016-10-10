@@ -20,6 +20,10 @@
 #include "claw.h"
 
 Gyro gyro;
+Encoder FR_encoder;
+Encoder FL_encoder;
+Encoder BR_encoder;
+Encoder BL_encoder;
 
  /**
   * Runs pre-initialization code.
@@ -47,4 +51,8 @@ void initialize() {
 	taskCreate(armTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
 	taskCreate(clawTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
 	gyro = gyroInit(GYRO_PORT, 0);
+  FL_encoder = encoderInit(7, 8, false);
+  FR_encoder = encoderInit(11, 12, true);
+  BL_encoder = encoderInit(5, 6, false);
+  BR_encoder = encoderInit(1, 2, false);
 }

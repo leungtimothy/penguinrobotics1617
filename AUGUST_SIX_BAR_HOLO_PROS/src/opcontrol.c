@@ -59,28 +59,41 @@ void operatorControl() {
 		// * @param buttonGroup one of 5, 6, 7, or 8 to request that button as labelled on the joystick
 		//* @param button one of JOY_UP, JOY_DOWN, JOY_LEFT, or JOY_RIGHT; requesting JOY_LEFT or
 		if (joystickGetDigital(1,8,JOY_UP))
-			armSetTarget(ARM_TOP);
+			armSetTarget(OUTSIDE_FENCE_SCORING_HEIGHT);
 		else if (joystickGetDigital(1,8,JOY_RIGHT))
-			armSetTarget(ARM_MID);
+			armSetTarget(OUTSIDE_FENCE_PUSH_HEIGHT);
+		else if (joystickGetDigital(1,8,JOY_LEFT))
+			armSetTarget(MIDDLE_FENCE_PUSH_HEIGHT);
 		else if (joystickGetDigital(1,8,JOY_DOWN))
-			armSetTarget(ARM_BOTTOM);
+			armSetTarget(GROUND_HEIGHT);
 
 		if (joystickGetDigital(1,5,JOY_UP))
-			armSetManual(UP);
+				armSetManual(UP);
 		else if (joystickGetDigital(1,5,JOY_DOWN))
-			armSetManual(DOWN);
+				armSetManual(DOWN);
 		else
-			armSetManual(AUTO);
+				armSetManual(AUTO);
 
 
 		if (joystickGetDigital(1,6,JOY_UP))
-			clawSetting(OPEN);
+			clawSetPower(127);
+			//clawSetting(OPEN);
+
 		else if (joystickGetDigital(1,6,JOY_DOWN))
-			clawSetting(CLOSE);
+			clawSetPower(-127);
+			//clawSetting(CLOSE);
 		else
-			clawSetting(HOLD);
+			clawSetPower(0);
+			//clawSetting(HOLD);
 
-
+		/*if(joystickGetDigital(1,8,JOY_DOWN))
+		{
+			digitalWrite(CLAW_PISTON_PORT, HIGH);
+		}
+		else if(joystickGetDigital(1,8,JOY_RIGHT))
+		{
+			digitalWrite(CLAW_PISTON_PORT, LOW);
+		}*/
 
 		if(joystickGetDigital(2,8,JOY_DOWN))
 		{
@@ -90,15 +103,7 @@ void operatorControl() {
 		{
 			digitalWrite(CLAW_PISTON_PORT, LOW);
 		}
-
-		if(joystickGetDigital(2,8,JOY_DOWN))
-		{
-			digitalWrite(CLAW_PISTON_PORT, HIGH);
-		}
-		else if(joystickGetDigital(2,8,JOY_RIGHT))
-		{
-			digitalWrite(CLAW_PISTON_PORT, LOW);
-		}
-		delay(20);
+		//printf("\r\n FL: %d, FR: %d, BL: %d, BR: %d",encoderGet(FL_encoder),encoderGet(FR_encoder),encoderGet(BL_encoder),encoderGet(BR_encoder));
+		delay(21);
 	}
 }

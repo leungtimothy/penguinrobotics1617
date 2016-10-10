@@ -17,11 +17,12 @@ void driveSetPower(Motor_Positions motor_location, int value) {
 	// Choose the motor port(s) to set
 	switch (motor_location) {
 	case FRONT_LEFT:
-		motorSet(FRONT_LEFT_DRIVE_MOTOR, value * MOTOR_1_DIR);
+		motorSet(FRONT_LEFT_DRIVE_MOTOR_1, value * MOTOR_1_DIR);
+		motorSet(FRONT_LEFT_DRIVE_MOTOR_2, value * MOTOR_10_DIR);
 		break;
 
 	case FRONT_RIGHT:
-		motorSet(FRONT_RIGHT_DRIVE_MOTOR, value * MOTOR_10_DIR);
+		motorSet(FRONT_RIGHT_DRIVE_MOTOR, value * MOTOR_6_DIR);
 		break;
 
 	case BACK_LEFT:
@@ -29,7 +30,7 @@ void driveSetPower(Motor_Positions motor_location, int value) {
 		break;
 
 	case BACK_RIGHT:
-		motorSet(BACK_RIGHT_DRIVE_MOTOR, value * MOTOR_2_DIR);
+		motorSet(BACK_RIGHT_DRIVE_MOTOR_1, value * MOTOR_2_DIR);
 		motorSet(BACK_RIGHT_DRIVE_MOTOR_2, value * MOTOR_3_DIR);
 		break;
 

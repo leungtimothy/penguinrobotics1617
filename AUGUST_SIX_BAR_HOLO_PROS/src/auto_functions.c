@@ -1,5 +1,41 @@
 #include "main.h"
 #include "auto_functions.h"
+#include "pid.h"
+#include "drive.h"
+
+void driveHolo(int distance, int power)
+{
+	encoderReset(BL_encoder);
+	encoderReset(BR_encoder);
+	encoderReset(FL_encoder);
+	encoderReset(FR_encoder);
+
+	PID FLBR_pid;
+	pidInit(&FLBR_pid, 2, 0.0, 0.0, 0, 0);
+
+	PID FRBL_pid;
+	pidInit(&FRBL_pid, 2, 0.0, 0.0, 0, 0);
+
+	PID overall_pid;
+	pidInit(&overall_pid, 0.2, 0.0, 0.0, 0, 0);
+
+	while(encoderGet(FR_encoder) < distance)
+	{
+		int FLBR_error = 0;//pidCalculate(&FLBR_pid, encoderGet(FL_encoder), encoderGet(BR_encoder));
+		int FRBL_error = 0;// pidCalculate(&FRBL_pid, encoderGet(FR_encoder), encoderGet(BL_encoder));
+		int overall_pid_error = pidCalculate(&overall_pid, encoderGet(FL_encoder) + encoderGet(BR_encoder), encoderGet(FR_encoder) + encoderGet(BL_encoder));
+
+		printf("\r\n FLBR_error: %d, FRBL_error: %d, overall_pid_error: %d", FLBR_error,FRBL_error,overall_pid_error);
+
+		driveSetPower(FRONT_LEFT, power + FLBR_error + overall_pid_error);
+		driveSetPower(BACK_RIGHT, power - FLBR_error + overall_pid_error);
+
+		driveSetPower(FRONT_RIGHT, power + FRBL_error - overall_pid_error);
+		driveSetPower(BACK_LEFT, power - FRBL_error - overall_pid_error);
+	}
+}
+
+
 
 /**
  * Use this function command the robot to rotate about its Z axis using the data obtained via the gyroscope.

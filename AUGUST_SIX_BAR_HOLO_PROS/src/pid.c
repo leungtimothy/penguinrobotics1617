@@ -1,4 +1,5 @@
 #include "pid.h"
+#include "main.h"
 
 void pidInit(PID * pid, float kp, float ki, float kd, int limitUpper, int limitLower) {
 	pid->kp = kp;

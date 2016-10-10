@@ -31,7 +31,7 @@ void clawSetting(Claw_Settings setting) {
 }
 
 void clawTask(void *ignore) {
-	int PID;
+/*	int PID;
 
 	pidInit(&pidClaw, 0.35, 0, 0, 0, 0);
 
@@ -56,5 +56,5 @@ void clawTask(void *ignore) {
 		printf("\r\nTarget: %d\tPos: %d\tPower: %d", claw.target, clawGetPosition(), motorGet(CLAW));
 
 		delay(20);
-	}
+	}*/
 }

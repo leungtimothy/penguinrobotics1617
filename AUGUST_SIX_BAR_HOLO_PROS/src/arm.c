@@ -14,8 +14,8 @@ void armSetPower(int value)
 	value = motorCap(value);
 
 	motorSet(LEFT_ARM_MOTOR, value * MOTOR_4_DIR);
-	motorSet(LEFT_ARM_MOTOR_2, value * MOTOR_7_DIR);
-	motorSet(RIGHT_ARM_MOTOR, value * MOTOR_6_DIR);
+	motorSet(RIGHT_ARM_MOTOR_1, value * MOTOR_7_DIR);
+	motorSet(RIGHT_ARM_MOTOR_2, value * MOTOR_8_DIR);
 }
 
 int armGetPosition() {
@@ -26,11 +26,11 @@ int armGetPosition() {
 }
 
 void armSetTarget(int target) {
-	if (target > ARM_TOP)
+	/*if (target > ARM_TOP)
 		arm.target = ARM_TOP;
 	else if (target < ARM_BOTTOM)
 		arm.target = ARM_BOTTOM;
-	else
+	else*/
 		arm.target = target;
 }
 
@@ -48,7 +48,9 @@ void armSetManual(Arm_Directions dir) {
 // armstates located in header file
 void armTask(void *ignore) {
 	PID pidArm;
-	pidInit(&pidArm, 0.3, 0, 0, 0, 0);
+	pidInit(&pidArm, 0.3, 0.0, 0.0, 0, 0);
+
+	int PID = pidCalculate(&pidArm, armGetPosition(), arm.target);
 
 	armSetTarget(armGetPosition());
 	while (true) {
@@ -59,9 +61,10 @@ void armTask(void *ignore) {
 			int PID = pidCalculate(&pidArm, armGetPosition(), arm.target);
 			if (abs(PID) > ARM_THRESHOLD)
 				armSetPower(PID);
+
 		}
 
-		//printf("\r\nTarget: %d\tPos: %d\tPower: %d", arm.target, armGetPosition(), motorGet(RIGHT_ARM_MOTOR));
+		//printf("\r\nTarget: %d\tPos: %d\tPower: %d", arm.target, armGetPosition(), motorGet(RIGHT_ARM_MOTOR_1));
 
 		delay(20);
 	}
