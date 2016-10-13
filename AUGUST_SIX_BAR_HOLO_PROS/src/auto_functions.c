@@ -4,84 +4,39 @@
 #include "pid.h"
 #include <math.h>
 
-void driveHolo(int distance, int power) {
-  encoderReset(BL_encoder);
-  encoderReset(BR_encoder);
-  encoderReset(FL_encoder);
-  encoderReset(FR_encoder);
-
-  PID FLBR_pid;
-  pidInit(&FLBR_pid, 2, 0.0, 0.0, 0, 0);
-
-  PID FRBL_pid;
-  pidInit(&FRBL_pid, 2, 0.0, 0.0, 0, 0);
-
-  PID overall_pid;
-  pidInit(&overall_pid, 0.2, 0.0, 0.0, 0, 0);
-
-  // finish check variables
-  int timeDelta = 0;
-  int timePrevious = 0;
-  bool isAtTarget = false;
-  bool isTimerOn = false;
-
-  while (!isAtTarget) {
-    int FLBR =
-        pidCalculate(&FLBR_pid, encoderGet(FL_encoder), encoderGet(BR_encoder));
-    int FRBL =
-        pidCalculate(&FRBL_pid, encoderGet(FR_encoder), encoderGet(BL_encoder));
-
-    int overall_pid_error = pidCalculate(
-        &overall_pid, (FLBR_pid.error + FRBL_pid.error) / 2, distance);
-
-    driveSetPower(FRONT_LEFT, power + FLBR + overall_pid_error);
-    driveSetPower(BACK_RIGHT, power - FLBR + overall_pid_error);
-
-    driveSetPower(FRONT_RIGHT, power + FRBL - overall_pid_error);
-    driveSetPower(BACK_LEFT, power - FRBL - overall_pid_error);
-
-    // check for finish
-    if (abs(overall_pid.error) < 10 && !isTimerOn) { // if robot is within 10
-                                                     // ticks of target and
-                                                     // timer flag is off
-      timeDelta = millis() - timePrevious;
-      isTimerOn = true; // set timer flag to indicate timer is running
-      timePrevious = millis();
-    } else if (abs(overall_pid.error) >
-               10)       // if robot is not within 1 degree of target
-      isTimerOn = false; // timer flag is reset
-
-    if (timeDelta > 1000 &&
-        isTimerOn)       // if the timer is over 250ms and timer flag is true
-      isAtTarget = true; // set boolean to complete while loop
-
-    delay(20);
-  }
-}
-
 #define ANGLE_OFFSET 45
 
 // PASS DESIRED DISTANCES IN CARTESIAN COORDINATES
 void driveHoloTest(int targetY, int targetX) {
-  // reset encoders
-  encoderReset(BL_encoder);
-  encoderReset(BR_encoder);
-  encoderReset(FL_encoder);
-  encoderReset(FR_encoder);
-
-  int FLBR;
-  int FRBL;
+  // variables for odometry calculation
+  int timeInitial;
+  int dt;
+  int dY;
+  int dX;
 
   int currY;
   int currX;
+  int currYAW;
+
+  int lastY = 0;
+  int lastX = 0;
+
+  int sumY = 0;
+  int sumX = 0;
+
+  int targetYAW = gyroGet(gyro);
 
   PID pidY;
-  pidInit(&pidY, 0.5, 0.0, 0.0, 0, 0);
+  pidInit(&pidY, 0.2, 0.0, 0.0, 0, 0);
   int outputY;
 
   PID pidX;
-  pidInit(&pidX, 0.5, 0.0, 0.0, 0, 0);
+  pidInit(&pidX, 0.2, 0.0, 0.0, 0, 0);
   int outputX;
+
+  PID pidYAW;
+  pidInit(&pidYAW, 0.4, 0, 0, 0, 0);
+  int outputYAW;
 
   // finish check variables
   int timeDelta = 0;
@@ -90,24 +45,61 @@ void driveHoloTest(int targetY, int targetX) {
   bool isTimerOn = false;
 
   while (!isAtTarget) {
-    // average out enocder ticks of the two sets of wheels
-    FLBR = (encoderGet(FL_encoder) + encoderGet(BR_encoder)) / 2;
-    FRBL = (encoderGet(FR_encoder) + encoderGet(BL_encoder)) / 2;
+    // reset encoders
+    encoderReset(FL_encoder);
+    encoderReset(FR_encoder);
+    encoderReset(BL_encoder);
+    encoderReset(BR_encoder);
 
-    // get the current X, Y position relative to its initial position
-    currY = FLBR * cos(ANGLE_OFFSET) + FRBL * cos(-ANGLE_OFFSET);
-    currX = FLBR * sin(ANGLE_OFFSET) + FRBL * sin(-ANGLE_OFFSET);
+    // record time
+    timeInitial = millis();
+
+    // set tiny delay to let some ticks to accumlate
+    delay(20);
+
+    // record REAL time elapsed
+    dt = millis() - timeInitial;
+
+    // calculate calculate the amount of ticks DISPLACED within this timeframe
+    currY =
+        ((encoderGet(FL_encoder) + encoderGet(BR_encoder)) * cos(ANGLE_OFFSET) +
+         (encoderGet(FR_encoder) + encoderGet(BL_encoder)) *
+             cos(-ANGLE_OFFSET)) /
+        2;
+
+    currX =
+        ((encoderGet(FL_encoder) + encoderGet(BR_encoder)) * sin(ANGLE_OFFSET) +
+         (encoderGet(FR_encoder) + encoderGet(BL_encoder)) *
+             sin(-ANGLE_OFFSET)) /
+        2;
+
+    // differentiate X & Y ticks in this timeframe
+    dY = (currY - lastY) / dt;
+    dX = (currX - lastX) / dt;
+
+    // record ticks within this timeframe as previous values for next cycle
+    lastY = currY;
+    lastX = currX;
+
+    // integrate X & Y to get displacement from initial position
+    sumY += dY;
+    sumX += dX;
+
+    // record current gyroscope reading
+    currYAW = gyroGet(gyro);
 
     // calculate p controller output
-    outputY = pidCalculate(&pidY, currY, targetY);
-    outputX = pidCalculate(&pidX, currX, targetX);
+    outputY = pidCalculate(&pidY, sumY, targetY);
+    outputX = pidCalculate(&pidX, sumX, targetX);
+    outputYAW = pidCalculate(&pidYAW, currYAW, targetYAW);
 
     // FOR DEBUGGING
-    printf("Y: %d\t X: %d\r\n", outputY, outputX);
+    printf("Y: %d\t X: %d\t YAW: %d\r\n", currY, currX, currYAW);
 
     // set drive channels
     driveSetChannel(Y, outputY);
     driveSetChannel(X, outputX);
+    driveSetChannel(YAW, -outputYAW);
 
     // CHECK FOR FINISH
     // if robot is within 10 ticks of target and timer flag is off
@@ -121,16 +113,13 @@ void driveHoloTest(int targetY, int targetX) {
       isTimerOn = false; // timer flag is reset
 
     // if the timer is over 250ms and timer flag is true
-    if (timeDelta > 250 && isTimerOn)
+    if (timeDelta > 1000 && isTimerOn)
       isAtTarget = true; // set boolean to complete while loop
 
     // don't kill cortex
     delay(20);
   }
-
-  // turn drive motors off
-  driveSetChannel(Y, 0);
-  driveSetChannel(X, 0);
+  driveStop();
 }
 
 /**
