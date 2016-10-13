@@ -7,7 +7,7 @@
 #define ANGLE_OFFSET 45
 
 // PASS DESIRED DISTANCES IN CARTESIAN COORDINATES
-void driveHoloTest(int targetY, int targetX) {
+void driveHolo(int targetY, int targetX) {
   // variables for odometry calculation
   int timeInitial;
   int dt;
@@ -94,7 +94,7 @@ void driveHoloTest(int targetY, int targetX) {
     outputYAW = pidCalculate(&pidYAW, currYAW, targetYAW);
 
     // FOR DEBUGGING
-    printf("Y: %d\t X: %d\t YAW: %d\r\n", currY, currX, currYAW);
+    printf("Y: %d\t X: %d\t YAW: %d\r\n", sumY, sumX, currYAW);
 
     // set drive channels
     driveSetChannel(Y, outputY);

@@ -55,4 +55,4 @@
 * exit. If it does so, the robot will await a switch to another mode or
 * disable/enable cycle.
 */
-void autonomous() { driveHoloTest(1000, 0); }
+void autonomous() { driveHolo(1000, 0); }
