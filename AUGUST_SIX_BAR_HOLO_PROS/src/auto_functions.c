@@ -4,8 +4,6 @@
 #include "pid.h"
 #include <math.h>
 
-#define M_PI 3.14159265358979323846
-
 void driveHolo(int distance, int power) {
   encoderReset(BL_encoder);
   encoderReset(BR_encoder);
@@ -61,28 +59,29 @@ void driveHolo(int distance, int power) {
   }
 }
 
-// WIP NOTHING HERE IS FUNCTIONAL
-void driveHoloTest(int bearing, int distance, int power) {
+#define ANGLE_OFFSET 45
+
+// PASS DESIRED DISTANCES IN CARTESIAN COORDINATES
+void driveHoloTest(int targetY, int targetX) {
+  // reset encoders
   encoderReset(BL_encoder);
   encoderReset(BR_encoder);
   encoderReset(FL_encoder);
   encoderReset(FR_encoder);
 
-  bearing = bearing * M_PI / 180.0;
+  int FLBR;
+  int FRBL;
 
-  int encoder_FLBR;
-  int encoder_FRBL;
+  int currY;
+  int currX;
 
-  PID FLBR_pid;
-  pidInit(&FLBR_pid, 2, 0.0, 0.0, 0, 0);
+  PID pidY;
+  pidInit(&pidY, 0.5, 0.0, 0.0, 0, 0);
+  int outputY;
 
-  PID FRBL_pid;
-  pidInit(&FRBL_pid, 2, 0.0, 0.0, 0, 0);
-
-  PID overall_pid;
-  pidInit(&overall_pid, 0.2, 0.0, 0.0, 0, 0);
-
-  int ALL;
+  PID pidX;
+  pidInit(&pidX, 0.5, 0.0, 0.0, 0, 0);
+  int outputX;
 
   // finish check variables
   int timeDelta = 0;
@@ -91,41 +90,47 @@ void driveHoloTest(int bearing, int distance, int power) {
   bool isTimerOn = false;
 
   while (!isAtTarget) {
-    pidCalculate(&FLBR_pid, encoderGet(FL_encoder), encoderGet(BR_encoder));
-    pidCalculate(&FRBL_pid, encoderGet(FR_encoder), encoderGet(BL_encoder));
+    // average out enocder ticks of the two sets of wheels
+    FLBR = (encoderGet(FL_encoder) + encoderGet(BR_encoder)) / 2;
+    FRBL = (encoderGet(FR_encoder) + encoderGet(BL_encoder)) / 2;
 
-    encoder_FLBR = (encoderGet(FL_encoder) + encoderGet(BR_encoder)) / 2;
-    encoder_FRBL = (encoderGet(FR_encoder) + encoderGet(BL_encoder)) / 2;
+    // get the current X, Y position relative to its initial position
+    currY = FLBR * cos(ANGLE_OFFSET) + FRBL * cos(-ANGLE_OFFSET);
+    currX = FLBR * sin(ANGLE_OFFSET) + FRBL * sin(-ANGLE_OFFSET);
 
-    ALL =
-        pidCalculate(&overall_pid, (encoder_FLBR + encoder_FRBL) / 2, distance);
+    // calculate p controller output
+    outputY = pidCalculate(&pidY, currY, targetY);
+    outputX = pidCalculate(&pidX, currX, targetX);
 
-    driveSetChannel(Y, ALL * cos(bearing));
-    driveSetChannel(X, ALL * sin(bearing));
+    // FOR DEBUGGING
+    printf("Y: %d\t X: %d\r\n", outputY, outputX);
 
-    printf("Error: %d\r\n", overall_pid.error);
+    // set drive channels
+    driveSetChannel(Y, outputY);
+    driveSetChannel(X, outputX);
 
-    // check for finish
-    if (abs(overall_pid.error) < 10 && !isTimerOn) { // if robot is within 10
-                                                     // ticks of target and
-                                                     // timer flag is off
+    // CHECK FOR FINISH
+    // if robot is within 10 ticks of target and timer flag is off
+    if ((abs(pidY.error) < 10 && abs(pidX.error) < 10) && !isTimerOn) {
       timeDelta = millis() - timePrevious;
       isTimerOn = true; // set timer flag to indicate timer is running
       timePrevious = millis();
-    } else if (abs(overall_pid.error) >
-               10)       // if robot is not within 1 degree of target
+
+      // if robot is not within 10 ticks of target
+    } else if (abs(pidY.error) > 10 && abs(pidX.error) > 10)
       isTimerOn = false; // timer flag is reset
 
-    if (timeDelta > 1000 &&
-        isTimerOn)       // if the timer is over 250ms and timer flag is true
+    // if the timer is over 250ms and timer flag is true
+    if (timeDelta > 250 && isTimerOn)
       isAtTarget = true; // set boolean to complete while loop
 
+    // don't kill cortex
     delay(20);
   }
 
-  driveSetChannel(X, 0);
+  // turn drive motors off
   driveSetChannel(Y, 0);
-  driveSetChannel(YAW, 0);
+  driveSetChannel(X, 0);
 }
 
 /**
