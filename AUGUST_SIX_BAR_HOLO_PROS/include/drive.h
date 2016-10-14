@@ -12,10 +12,11 @@ struct DriveChannels {
   int powerYaw;
 } driveChannels;
 
-struct Coordinates {
+struct Odometry {
   int Y;
   int X;
-} robotCoordinates;
+  int YAW;
+} odometry;
 
 typedef enum Motor_Positions {
   FRONT_LEFT,
@@ -51,5 +52,8 @@ void driveSetChannel(Channels channel, int value);
  * Use this function to stop all drive motors.
  */
 void driveStop(void);
+
+// Odometry tracking task protoype
+void odometryTask(void *ignore);
 
 #endif

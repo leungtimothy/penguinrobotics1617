@@ -4,26 +4,8 @@
 #include "pid.h"
 #include <math.h>
 
-#define ANGLE_OFFSET 45
-
 // PASS DESIRED DISTANCES IN CARTESIAN COORDINATES
 void driveHolo(int targetY, int targetX) {
-  // variables for odometry calculation
-  int timeInitial;
-  int dt;
-  int dY;
-  int dX;
-
-  int currY;
-  int currX;
-  int currYAW;
-
-  int lastY = 0;
-  int lastX = 0;
-
-  int sumY = 0;
-  int sumX = 0;
-
   int targetYAW = gyroGet(gyro);
 
   PID pidY;
@@ -45,56 +27,13 @@ void driveHolo(int targetY, int targetX) {
   bool isTimerOn = false;
 
   while (!isAtTarget) {
-    // reset encoders
-    encoderReset(FL_encoder);
-    encoderReset(FR_encoder);
-    encoderReset(BL_encoder);
-    encoderReset(BR_encoder);
-
-    // record time
-    timeInitial = millis();
-
-    // set tiny delay to let some ticks to accumlate
-    delay(20);
-
-    // record REAL time elapsed
-    dt = millis() - timeInitial;
-
-    // calculate calculate the amount of ticks DISPLACED within this timeframe
-    currY =
-        ((encoderGet(FL_encoder) + encoderGet(BR_encoder)) * cos(ANGLE_OFFSET) +
-         (encoderGet(FR_encoder) + encoderGet(BL_encoder)) *
-             cos(-ANGLE_OFFSET)) /
-        2;
-
-    currX =
-        ((encoderGet(FL_encoder) + encoderGet(BR_encoder)) * sin(ANGLE_OFFSET) +
-         (encoderGet(FR_encoder) + encoderGet(BL_encoder)) *
-             sin(-ANGLE_OFFSET)) /
-        2;
-
-    // differentiate X & Y ticks in this timeframe
-    dY = (currY - lastY) / dt;
-    dX = (currX - lastX) / dt;
-
-    // record ticks within this timeframe as previous values for next cycle
-    lastY = currY;
-    lastX = currX;
-
-    // integrate X & Y to get displacement from initial position
-    sumY += dY;
-    sumX += dX;
-
-    // record current gyroscope reading
-    currYAW = gyroGet(gyro);
-
     // calculate p controller output
-    outputY = pidCalculate(&pidY, sumY, targetY);
-    outputX = pidCalculate(&pidX, sumX, targetX);
-    outputYAW = pidCalculate(&pidYAW, currYAW, targetYAW);
+    outputY = pidCalculate(&pidY, odometry.Y, targetY);
+    outputX = pidCalculate(&pidX, odometry.X, targetX);
+    outputYAW = pidCalculate(&pidYAW, odometry.YAW, targetYAW);
 
     // FOR DEBUGGING
-    printf("Y: %d\t X: %d\t YAW: %d\r\n", sumY, sumX, currYAW);
+    printf("Y: %d\t X: %d\t YAW: %d\r\n", odometry.Y, odometry.X, odometry.YAW);
 
     // set drive channels
     driveSetChannel(Y, outputY);

@@ -1,6 +1,10 @@
 #include "drive.h"
 #include "main.h"
 #include "util.h"
+#include <math.h>
+
+#define ANGLE_OFFSET 45
+#define DELTA_THRESHOLD 0
 
 /**
  * Use this function to set the individual drive motors of the holonomic drive.
@@ -86,14 +90,82 @@ void driveStop() {
   driveSetPower(BACK_RIGHT, 0);
 }
 
-void XYTracking(void *ignore) {
+// Odometry tracking task
+void odometryTask(void *ignore) {
+  // variables for odometry calculation
+  int timeInitial;
+  int dt;
+  int dY;
+  int dX;
+  // int dYAW;
+
+  int currY;
+  int currX;
+  // int currYAW;
+
+  int lastY = 0;
+  int lastX = 0;
+  // int lastYAW = 0;
+
   while (true) {
     // reset encoders
-    encoderReset(BL_encoder);
-    encoderReset(BR_encoder);
     encoderReset(FL_encoder);
     encoderReset(FR_encoder);
+    encoderReset(BL_encoder);
+    encoderReset(BR_encoder);
+
+    // gyroReset(gyro);
+
+    // record time
+    timeInitial = millis();
+
+    // set tiny delay to allow for some tick accumulation
+    delay(5);
+
+    // record REAL time elapsed
+    dt = millis() - timeInitial;
+
+    // calculate calculate the amount of ticks DISPLACED within this timeframe
+    currY =
+        ((encoderGet(FL_encoder) + encoderGet(BR_encoder)) * cos(ANGLE_OFFSET) +
+         (encoderGet(FR_encoder) + encoderGet(BL_encoder)) *
+             cos(-ANGLE_OFFSET)) /
+        2;
+
+    currX =
+        ((encoderGet(FL_encoder) + encoderGet(BR_encoder)) * sin(ANGLE_OFFSET) +
+         (encoderGet(FR_encoder) + encoderGet(BL_encoder)) *
+             sin(-ANGLE_OFFSET)) /
+        2;
+
+    // currYAW = gyroGet(gyro);
+
+    // differentiate X & Y ticks in this timeframe
+    dY = (currY - lastY) / dt;
+    dX = (currX - lastX) / dt;
+
+    // dYAW = (currYAW - lastYAW) / dt;
+
+    // record ticks within this timeframe as previous values for next cycle
+    lastY = currY;
+    lastX = currX;
+
+    // lastYAW = currYAW;
+
+    // integrate X & Y to get displacement from initial position
+    if (abs(dY) > DELTA_THRESHOLD)
+      odometry.Y += dY;
+    if (abs(dX) > DELTA_THRESHOLD)
+      odometry.X += dX;
+
+    odometry.YAW = gyroGet(gyro);
 
     delay(20);
   }
+}
+
+void resetOdometry() {
+  odometry.Y = 0;
+  odometry.X = 0;
+  odometry.YAW = 0;
 }
