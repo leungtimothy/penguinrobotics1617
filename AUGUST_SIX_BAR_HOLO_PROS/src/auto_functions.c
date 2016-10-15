@@ -63,6 +63,7 @@ void driveHolo(int distance, int power) {
 
 // PASS DESIRED DISTANCES IN CARTESIAN COORDINATES
 void driveHoloTest(int targetY, int targetX) {
+
   // reset encoders
   encoderReset(BL_encoder);
   encoderReset(BR_encoder);
@@ -118,7 +119,7 @@ void driveHoloTest(int targetY, int targetX) {
 
       // if robot is not within 10 ticks of target
     } else if (abs(pidY.error) > 10 && abs(pidX.error) > 10)
-      isTimerOn = false; // timer flag is reset
+      isTimerOn = false; // ti mer flag is reset
 
     // if the timer is over 250ms and timer flag is true
     if (timeDelta > 250 && isTimerOn)
@@ -202,4 +203,26 @@ void driveGyroTurn(enum Turn_Directions turnDirection, int targetDegrees) {
   }
 
   // driveStop();
+}
+
+
+void trackXY()
+{
+  int last_FR_reading = 0;
+  while(true)
+  {
+
+    encoderReset(BL_encoder);
+    encoderReset(BR_encoder);
+    encoderReset(FL_encoder);
+    encoderReset(FR_encoder);
+
+    int curr_FR_reading = encoderGet(FR_encoder);
+
+
+
+    encoderReset(FR_encoder);
+
+
+  }
 }

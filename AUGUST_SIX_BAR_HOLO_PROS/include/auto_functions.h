@@ -14,6 +14,6 @@ enum Turn_Directions { LEFT, RIGHT };
  */
 void driveGyroTurn(enum Turn_Directions turnDirection, int targetDegrees);
 void driveHolo(int distance, int power);
-void driveHoloTest(int bearing, int targetDistance, int power);
+void driveHoloTest(int targetY, int targetX);
 
 #endif

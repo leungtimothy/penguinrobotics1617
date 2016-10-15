@@ -75,8 +75,8 @@ void armTask(void *ignore) {
       armSetPower(PID);
     }
 
-    /*printf("\r\nTarget: %d\tPos: %d\tPower: %d", arm.target, armGetPosition(),
-           motorGet(RIGHT_ARM_MOTOR_1));*/
+    printf("\r\nTarget: %d\tPos: %d\tPower: %d", arm.target, armGetPosition(),
+           motorGet(RIGHT_ARM_MOTOR_1));
 
     delay(20);
   }
