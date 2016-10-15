@@ -70,16 +70,12 @@ void operatorControl() {
     int joystick_1_3 = joystickGetAnalog(1, 3);
     int joystick_1_4 = joystickGetAnalog(1, 4);
 
-    if (joystick_1_1 < JOYSTICK_DEADZONE && joystick_1_1 > -JOYSTICK_DEADZONE)
-      joystick_1_1 = 0;
-    if (joystick_1_3 < JOYSTICK_DEADZONE && joystick_1_3 > -JOYSTICK_DEADZONE)
-      joystick_1_3 = 0;
-    if (joystick_1_4 < JOYSTICK_DEADZONE && joystick_1_4 > -JOYSTICK_DEADZONE)
-      joystick_1_4 = 0;
-
-    driveSetChannel(X, joystick_1_4);
-    driveSetChannel(Y, joystick_1_3);
-    driveSetChannel(YAW, joystick_1_1);
+    if (abs(joystick_1_3) > JOYSTICK_DEADZONE)
+      driveSetChannel(Y, joystick_1_3);
+    if (abs(joystick_1_4) > JOYSTICK_DEADZONE)
+      driveSetChannel(X, joystick_1_4);
+    if (abs(joystick_1_1) > JOYSTICK_DEADZONE)
+      driveSetChannel(YAW, joystick_1_1);
 
     /*driveSetPower(FRONT_LEFT, joystick_1_3 + joystick_1_4 + joystick_1_1);
     driveSetPower(FRONT_RIGHT, joystick_1_3 - joystick_1_4 - joystick_1_1);
@@ -135,8 +131,7 @@ void operatorControl() {
     } else if (joystickGetDigital(2, 8, JOY_RIGHT)) {
       digitalWrite(CLAW_PISTON_PORT, LOW);
     }
-    // printf("\r\n FL: %d, FR: %d, BL: %d, BR:
-    // %d",encoderGet(FL_encoder),encoderGet(FR_encoder),encoderGet(BL_encoder),encoderGet(BR_encoder));
+    printf("Y: %d\t X: %d\t YAW: %d\r\n", odometry.Y, odometry.X, odometry.YAW);
     delay(20);
   }
 }

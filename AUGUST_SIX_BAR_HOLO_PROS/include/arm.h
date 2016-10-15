@@ -9,7 +9,7 @@
 #define OUTSIDE_FENCE_PUSH_HEIGHT 2525
 #define MIDDLE_FENCE_PUSH_HEIGHT 2400
 #define GROUND_HEIGHT 1650
-
+ 
 #define ARM_THRESHOLD 10
 
 typedef enum { UP, DOWN, AUTO } Arm_Directions;
