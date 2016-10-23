@@ -72,10 +72,16 @@ void operatorControl() {
 
     if (abs(joystick_1_3) > JOYSTICK_DEADZONE)
       driveSetChannel(Y, joystick_1_3);
+    else
+      driveSetChannel(Y, 0);
     if (abs(joystick_1_4) > JOYSTICK_DEADZONE)
       driveSetChannel(X, joystick_1_4);
+      else
+        driveSetChannel(X, 0);
     if (abs(joystick_1_1) > JOYSTICK_DEADZONE)
       driveSetChannel(YAW, joystick_1_1);
+      else
+        driveSetChannel(YAW, 0);
 
     /*driveSetPower(FRONT_LEFT, joystick_1_3 + joystick_1_4 + joystick_1_1);
     driveSetPower(FRONT_RIGHT, joystick_1_3 - joystick_1_4 - joystick_1_1);
@@ -99,19 +105,19 @@ void operatorControl() {
     else if (joystickGetDigital(1, 8, JOY_DOWN))
       armSetTarget(GROUND_HEIGHT);
 
-    if (joystickGetDigital(1, 5, JOY_UP))
+    if (joystickGetDigital(1, 5, JOY_UP) || joystickGetDigital(2,5,JOY_UP))
       armSetManual(UP);
-    else if (joystickGetDigital(1, 5, JOY_DOWN))
+    else if (joystickGetDigital(1, 5, JOY_DOWN) || joystickGetDigital(2,5,JOY_DOWN))
       armSetManual(DOWN);
     else
       armSetManual(AUTO);
 
     if (joystickGetDigital(1, 6, JOY_UP))
-      clawSetPower(127);
+      clawSetPower(80);
     // clawSetting(OPEN);
 
     else if (joystickGetDigital(1, 6, JOY_DOWN))
-      clawSetPower(-127);
+      clawSetPower(-60);
     // clawSetting(CLOSE);
     else
       clawSetPower(0);
