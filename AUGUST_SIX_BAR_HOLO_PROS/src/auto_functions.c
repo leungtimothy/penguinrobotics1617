@@ -31,9 +31,6 @@ void driveHolo(int targetY, int targetX) {
     outputX = pidCalculate(&pidX, odometry.X, targetX);
     outputYAW = pidCalculate(&pidYAW, odometry.YAW, targetYAW);
 
-    // FOR DEBUGGING
-    printf("Y: %d\t X: %d\t YAW: %d\r\n", odometry.Y, odometry.X, odometry.YAW);
-
     // set drive channels
     driveSetChannel(Y, outputY);
     driveSetChannel(X, outputX);
@@ -129,26 +126,4 @@ void driveGyroTurn(enum Turn_Directions turnDirection, int targetDegrees) {
   }
 
   // driveStop();
-}
-
-
-void trackXY()
-{
-  int last_FR_reading = 0;
-  while(true)
-  {
-
-    encoderReset(BL_encoder);
-    encoderReset(BR_encoder);
-    encoderReset(FL_encoder);
-    encoderReset(FR_encoder);
-
-    int curr_FR_reading = encoderGet(FR_encoder);
-
-
-
-    encoderReset(FR_encoder);
-
-
-  }
 }

@@ -13,9 +13,9 @@ struct DriveChannels {
 } driveChannels;
 
 struct Odometry {
-  int Y;
-  int X;
-  int YAW;
+  float Y;
+  float X;
+  float YAW;
 } odometry;
 
 typedef enum Motor_Positions {
@@ -55,5 +55,7 @@ void driveStop(void);
 
 // Odometry tracking task protoype
 void odometryTask(void *ignore);
+
+void odometryReset();
 
 #endif

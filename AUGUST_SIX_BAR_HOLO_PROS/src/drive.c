@@ -4,7 +4,8 @@
 #include <math.h>
 
 #define ANGLE_OFFSET 45
-#define DELTA_THRESHOLD 0
+#define DELTA_THRESHOLD 5
+#define ROTATION_THRESHOLD 1
 
 /**
  * Use this function to set the individual drive motors of the holonomic drive.
@@ -92,20 +93,14 @@ void driveStop() {
 
 // Odometry tracking task
 void odometryTask(void *ignore) {
-  // variables for odometry calculation
-  int timeInitial;
-  int dt;
-  int dY;
-  int dX;
-  // int dYAW;
+  float dY;
+  float dX;
+  int dYAW;
 
-  int currY;
-  int currX;
-  // int currYAW;
+  int currYAW;
+  int lastYAW = 0;
 
-  int lastY = 0;
-  int lastX = 0;
-  // int lastYAW = 0;
+  int FL, FR, BL, BR;
 
   while (true) {
     // reset encoders
@@ -116,55 +111,54 @@ void odometryTask(void *ignore) {
 
     // gyroReset(gyro);
 
-    // record time
-    timeInitial = millis();
+    currYAW = gyroGet(gyro);
 
     // set tiny delay to allow for some tick accumulation
     delay(5);
 
     // record REAL time elapsed
-    dt = millis() - timeInitial;
+    // dt = millis() - timeInitial;
 
-    // calculate calculate the amount of ticks DISPLACED within this timeframe
-    currY =
-        ((encoderGet(FL_encoder) + encoderGet(BR_encoder)) * cos(ANGLE_OFFSET) +
-         (encoderGet(FR_encoder) + encoderGet(BL_encoder)) *
-             cos(-ANGLE_OFFSET)) /
-        2;
+    FL = encoderGet(FL_encoder);
+    FR = encoderGet(FR_encoder);
+    BL = encoderGet(BL_encoder);
+    BR = encoderGet(BR_encoder);
 
-    currX =
-        ((encoderGet(FL_encoder) + encoderGet(BR_encoder)) * sin(ANGLE_OFFSET) +
-         (encoderGet(FR_encoder) + encoderGet(BL_encoder)) *
-             sin(-ANGLE_OFFSET)) /
-        2;
+    // calculate calculate the amount of ticks DISPLACED within this
+    // timeframe
+    dY = (FL + BR) * cos(ANGLE_OFFSET) + (FR + BL) * cos(-ANGLE_OFFSET);
 
+    dX = (FL + BR) * sin(ANGLE_OFFSET) + (FR + BL) * sin(-ANGLE_OFFSET);
+
+    dYAW = currYAW - lastYAW;
+
+    // printf("YAW: %d\t dYAW: %d\t", currYAW, dYAW);
+
+    lastYAW = currYAW;
+
+    // printf("currY: %f\t currX: %f\t", currY, currX);
     // currYAW = gyroGet(gyro);
 
-    // differentiate X & Y ticks in this timeframe
-    dY = (currY - lastY) / dt;
-    dX = (currX - lastX) / dt;
-
-    // dYAW = (currYAW - lastYAW) / dt;
-
-    // record ticks within this timeframe as previous values for next cycle
-    lastY = currY;
-    lastX = currX;
-
-    // lastYAW = currYAW;
+    // printf("dY: %f\t dX: %f\t", dY, dX);
 
     // integrate X & Y to get displacement from initial position
-    if (abs(dY) > DELTA_THRESHOLD)
+    if (abs(dYAW) < ROTATION_THRESHOLD) {
+      // if (abs(dY) > DELTA_THRESHOLD)
       odometry.Y += dY;
-    if (abs(dX) > DELTA_THRESHOLD)
+      // if (abs(dX) > DELTA_THRESHOLD)
       odometry.X += dX;
 
-    odometry.YAW = gyroGet(gyro);
+      odometry.YAW = currYAW;
+    }
 
+    // printf("Y: %f\t X: %f\t", odometry.Y, odometry.X);
+
+    // printf("\r\n");
     delay(20);
   }
 }
 
-void resetOdometry() {
+void odometryReset() {
   odometry.Y = 0;
   odometry.X = 0;
   odometry.YAW = 0;

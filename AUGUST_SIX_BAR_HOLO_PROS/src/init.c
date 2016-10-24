@@ -78,7 +78,7 @@ void initializeIO() {
  */
 void initialize() {
   taskCreate(armTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
-  taskCreate(clawTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+  // taskCreate(clawTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
   taskCreate(odometryTask, TASK_DEFAULT_STACK_SIZE, NULL,
              TASK_PRIORITY_DEFAULT);
   gyro = gyroInit(GYRO_PORT, 0);

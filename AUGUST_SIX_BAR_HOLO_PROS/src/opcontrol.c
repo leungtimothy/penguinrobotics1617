@@ -74,14 +74,16 @@ void operatorControl() {
       driveSetChannel(Y, joystick_1_3);
     else
       driveSetChannel(Y, 0);
+
     if (abs(joystick_1_4) > JOYSTICK_DEADZONE)
       driveSetChannel(X, joystick_1_4);
-      else
-        driveSetChannel(X, 0);
+    else
+      driveSetChannel(X, 0);
+
     if (abs(joystick_1_1) > JOYSTICK_DEADZONE)
       driveSetChannel(YAW, joystick_1_1);
-      else
-        driveSetChannel(YAW, 0);
+    else
+      driveSetChannel(YAW, 0);
 
     /*driveSetPower(FRONT_LEFT, joystick_1_3 + joystick_1_4 + joystick_1_1);
     driveSetPower(FRONT_RIGHT, joystick_1_3 - joystick_1_4 - joystick_1_1);
@@ -89,6 +91,9 @@ void operatorControl() {
     driveSetPower(BACK_RIGHT, joystick_1_3 + joystick_1_4 - joystick_1_1);*/
 
     /* --- End Holonomic Drive --- */
+
+    if (joystickGetDigital(1, 7, JOY_DOWN))
+      odometryReset();
 
     // bool joystickGetDigital(unsigned char joystick, unsigned char
     // buttonGroup, unsigned char button);
@@ -105,9 +110,10 @@ void operatorControl() {
     else if (joystickGetDigital(1, 8, JOY_DOWN))
       armSetTarget(GROUND_HEIGHT);
 
-    if (joystickGetDigital(1, 5, JOY_UP) || joystickGetDigital(2,5,JOY_UP))
+    if (joystickGetDigital(1, 5, JOY_UP) || joystickGetDigital(2, 5, JOY_UP))
       armSetManual(UP);
-    else if (joystickGetDigital(1, 5, JOY_DOWN) || joystickGetDigital(2,5,JOY_DOWN))
+    else if (joystickGetDigital(1, 5, JOY_DOWN) ||
+             joystickGetDigital(2, 5, JOY_DOWN))
       armSetManual(DOWN);
     else
       armSetManual(AUTO);
@@ -137,7 +143,7 @@ void operatorControl() {
     } else if (joystickGetDigital(2, 8, JOY_RIGHT)) {
       digitalWrite(CLAW_PISTON_PORT, LOW);
     }
-    printf("Y: %d\t X: %d\t YAW: %d\r\n", odometry.Y, odometry.X, odometry.YAW);
+
     delay(20);
   }
 }
