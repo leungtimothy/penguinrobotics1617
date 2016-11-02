@@ -59,6 +59,7 @@ extern "C" {
 #define ARM_POT 2
 #define isArmPotFlipped 1
 #define CLAW_POT 1
+#define isClawPotFlipped 1
 
 /*  Motor Port and Direction Definitions*/
 #define RIGHT_ARM_OUTSIDE_MOTOR 1
@@ -96,12 +97,8 @@ extern "C" {
 
 extern Gyro gyro;
 
-extern int clawHold;
-extern int clawPos;
-
 extern int armHold;
 extern int armPos;
-
 
 //#define AUTO_DEBUG
 
@@ -205,6 +202,7 @@ int motorCap(int value);
  */
 void setClawMotors(int value);
 int armGetPosition();
+int clawGetPosition();
 
 void clawTask(void *ignore);
 void armTask(void* ignore);

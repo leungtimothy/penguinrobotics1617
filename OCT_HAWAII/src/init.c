@@ -16,6 +16,7 @@
  */
 
 #include "main.h"
+#include "claw.h"
 
 Gyro gyro;
 
@@ -36,10 +37,15 @@ void initializeIO() {
  *
  * This function should initialize most sensors (gyro, encoders, ultrasonics), LCDs, global variables, and IMEs.
  *
- * This function must exit relatively promptly, or the operatorControl() and autonomous() tasks will not start. An autonomous mode selection menu like the pre_auton() in other environments can be implemented in this task if desired.
+ * This function must exit relatively promptly, or the oper atorControl() and autonomous() tasks will not start. An autonomous mode selection menu like the pre_auton() in other environments can be implemented in this task if desired.
  */
+    Claw claw;
 void initialize() {
 	 //gyro = gyroInit(1, 0);
-    //taskCreate(clawTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+
+    claw.status = HOLDING;
+    claw.holdTarget = clawGetPosition();
+
+    taskCreate(clawTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
     taskCreate(armTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
 }

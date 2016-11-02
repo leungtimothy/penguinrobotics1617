@@ -24,6 +24,12 @@ int armGetPosition() {
     return analogRead(ARM_POT);
 }
 
+int clawGetPosition(){
+	if (isClawPotFlipped)
+		return abs(4000 - analogRead(CLAW_POT));
+	else
+		return analogRead(CLAW_POT);
+}
 
 
 /**
@@ -76,21 +82,6 @@ void setArmMotors(int value)
 	motorSet(RIGHT_ARM_OUTSIDE_MOTOR, value*MOTOR_1_DIR);
 }
 
-/**
- * Use this function to set the speed of the claw motor.
- *
- * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
- * being off. If the value is > 127 or < -127, it will be rounded.
- *
- */
-void setClawMotors(int value)
-{
-	value = motorCap(value);
-
-	motorSet(CLAW_MOTOR_2, value*MOTOR_9_DIR);
-	motorSet(CLAW_MOTOR, value * MOTOR_2_DIR);
-}
-
 int armHold = 0;
 int armPos = 0;
 
@@ -107,28 +98,6 @@ void armTask(void *ignore)
 			errorArm = motorCap(errorArm*kp);
 			setArmMotors(errorArm);
 			//printf("armpot: %d\n",analogRead(ARM_POT));
-			delay(20);
-		}
-		delay(20);
-	}
-}
-
-int clawHold = 0;
-int clawPos = 0;
-
-void clawTask(void *ignore)
-{
-	clawHold = 1;
-	clawPos = analogRead(CLAW_POT);
-	float kp = 0.2;
-	while(true)
-	{
-		if(clawHold)
-		{
-			int errorClaw = clawPos - analogRead(CLAW_POT);
-			errorClaw = motorCap(errorClaw*kp);
-			setClawMotors(errorClaw);
-			printf("clawpot: %d\n",analogRead(CLAW_POT));
 			delay(20);
 		}
 		delay(20);

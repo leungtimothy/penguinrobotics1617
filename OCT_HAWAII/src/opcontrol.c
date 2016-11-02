@@ -16,6 +16,7 @@
  ********************************************************************************/
 
 #include "main.h"
+#include "claw.h"
 
 
 /**
@@ -30,7 +31,12 @@
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl() {
-	clawPos = armGetPosition();
+	armHold = 1;
+	armPos = armGetPosition();
+	claw.holdTarget = clawGetPosition();
+
+	ClawButtonStatus clawButtonStatus = NOT_PRESSED;
+
 	while (true)
 	{
 		int joystick_1_1 = joystickGetAnalog(1, 1);
@@ -50,12 +56,12 @@ void operatorControl() {
 		setDrive(RIGHT,joystick_1_3-joystick_1_1);
 		setDrive(STRAFE,joystick_1_4);
 
-		if(joystickGetDigital(1, 5, JOY_UP) && analogRead(ARM_POT) > 525)
+		if(joystickGetDigital(1, 5, JOY_UP) && armGetPosition() < 3000)
 		{
 			armHold = 0;
 			setArmMotors(127);
 		}
-		else if(joystickGetDigital(1, 5, JOY_DOWN) && analogRead(ARM_POT) < 3000)
+		else if(joystickGetDigital(1, 5, JOY_DOWN) && armGetPosition() > 550 )
 		{
 			armHold = 0;
 			setArmMotors(-127);
@@ -69,34 +75,85 @@ void operatorControl() {
 		}
 
 		if (joystickGetDigital(1, 8, JOY_UP))
-		armPos = 3000;
-	else if (joystickGetDigital(1, 8, JOY_LEFT))
-		armPos = 2000;
-	else if (joystickGetDigital(1, 8, JOY_RIGHT))
-		armPos = 1000;
-	else if (joystickGetDigital(1, 8, JOY_DOWN))
-		armPos = 525;
+			armPos = 3000;
+		else if (joystickGetDigital(1, 8, JOY_LEFT))
+			armPos = 2000;
+		else if (joystickGetDigital(1, 8, JOY_RIGHT))
+			armPos = 1000;
+		else if (joystickGetDigital(1, 8, JOY_DOWN))
+			armPos = 525;
 
-		if(joystickGetDigital(1, 6, JOY_UP) && analogRead(CLAW_POT) > 1000)
+		if(joystickGetDigital(1, 6, JOY_UP) && clawButtonStatus == NOT_PRESSED && clawGetPosition() < 4000)
  		{
- 			clawHold = 0;
+			claw.status = MOVING;
+			clawButtonStatus = OPEN;
  			setClawMotors(127);
- 		}
- 		else if(joystickGetDigital(1, 6, JOY_DOWN) && analogRead(CLAW_POT) < 3900)
+
+			#ifdef CLAW_DEBUG
+				printf("Claw status: START OPENING\n");
+			#endif
+		}
+ 		else if(joystickGetDigital(1, 6, JOY_DOWN) && clawButtonStatus == NOT_PRESSED && clawGetPosition() >0)
  		{
- 			clawHold = 0;
- 			setClawMotors(-127);
+ 			claw.status = MOVING;
+			clawButtonStatus = CLOSE;
+			setClawMotors(-127);
+
+			#ifdef CLAW_DEBUG
+				printf("Claw status: START CLOSE\n");
+			#endif
  		}
- 		else if(!clawHold)
+ 		else if((clawButtonStatus == CLOSE && !joystickGetDigital(1, 6, JOY_DOWN)) || (clawButtonStatus == OPEN && !joystickGetDigital(1, 6, JOY_UP)))
  		{
- 			setClawMotors(0);
- 			delay(100);
- 			clawPos = analogRead(CLAW_POT);
- 			clawHold = 1;
+			claw.holdTarget = clawGetPosition();
+			setClawMotors(0);
+			clawButtonStatus = NOT_PRESSED;
+
+			#ifdef CLAW_DEBUG
+				printf("Claw status: STOP MOTORS AND CHECK IF STATIONARY\n");
+			#endif
+
+ 			if(claw.status == STATIONARY)
+			{
+				claw.status = HOLDING;
+
+				#ifdef CLAW_DEBUG
+					printf("Claw status: HOLD POSITION, CLAW IS STATIONARY\n");
+				#endif
+			}
  		}
+		else if(claw.status == STATIONARY && clawButtonStatus == NOT_PRESSED)
+		{
+			claw.holdTarget = clawGetPosition();
+			claw.status = HOLDING;
+
+			#ifdef CLAW_DEBUG
+				printf("Claw status: HOLD, IS NOW STATIONARY\n");
+			#endif
+		}
+		else if(claw.status == MOVING || claw.status == STATIONARY)
+		{
+			int pastDistance = clawGetPosition();
+			delay(75);
+			if(abs(pastDistance - clawGetPosition()) > CLAW_IS_MOVING_THRESHOLD)
+			{
+				claw.status = MOVING;
+				#ifdef CLAW_DEBUG
+					printf("CLAW STATUS: STILL MOVING\n");
+				#endif
+			}
+			else
+			{
+				claw.status = STATIONARY;
+
+				#ifdef CLAW_DEBUG
+					printf("CLAW STATUS: STATIONARY\n");
+				#endif
+			}
+		}
 
 			//printf("clawpot: %d\n",analogRead(CLAW_POT));
-			printf("armpot: %d\n",armGetPosition());
+			//printf("armpot: %d\n",armGetPosition());
 		delay(20);
 	}
 }

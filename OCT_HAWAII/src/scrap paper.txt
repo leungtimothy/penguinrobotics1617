@@ -1,0 +1,46 @@
+
+
+/*
+		if(buttonClawOpen == 1 && clawButtonStatus == notPressed)  // Initial button press
+ 		{
+      // Start claw motors
+      runClawMotors(127)
+      clawStatus = isMoving;
+      clawButtonStatus = clawOpen;
+ 		}
+ 		else if( buttonClawClose == 1 && clawButtonStatus == notPressed) // Initial button press
+ 		{
+      // Start claw motors
+ 		  runClawMotors(-127);
+      clawStatus = isMoving;
+      clawButtonStatus = clawClose;
+ 		}
+    else if((clawButtonStatus == clawClose && buttonClawClose != 1 ) || (clawButtonStatus == clawOpen && buttonClawOpen != 1))
+    {
+      // User released the button, we should stop and hold.
+
+      if(clawStatus == isMoving)
+        waitUntilClawIsStationary(); // This is blocking, might need more algorithms if it takes claw takes too lnog to stop
+
+      holdArmPos(currentPos);
+    }
+    else if(clawButtonStatus == clawClose || clawButtonStatus == clawOpen)
+    {
+      // Claw motors still running. Updating status
+      if(clawIsMoving())
+        clawStatus = isMoving;
+      else
+        clawStatus = isStationary;
+    }
+
+
+
+
+ 		else if(clawIsRunning)
+ 		{
+   		waitUntilClawIsStationary();
+      clawIsRunning = false;
+      clawIsStationary = false;
+      holdArmPos();
+ 		}
+    else if(clawIsStationary)*/
