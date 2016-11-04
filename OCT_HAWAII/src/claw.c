@@ -15,6 +15,21 @@ void setClawMotors(int value)
 	motorSet(CLAW_MOTOR, value * MOTOR_2_DIR);
 }
 
+int clawGetPosition(){
+	if (isClawPotFlipped)
+		return abs(4095 - analogRead(CLAW_POT));
+	else
+		return analogRead(CLAW_POT);
+}
+
+void waitUntilClawPos(int pos)
+{
+	while(clawGetPosition()>pos)
+	{
+		delay(20);
+	}
+}
+
 void clawTask(void *ignore)
 {
   //Just in case
@@ -27,7 +42,7 @@ void clawTask(void *ignore)
 
 	while(true)
 	{
-		if(claw.status == HOLDING || claw.status == SETPOINT)
+		if(claw.status == HOLDING || claw.status == SETPOINT )
 		{
 			int error = claw.holdTarget - clawGetPosition();
 			int motorValue;
@@ -58,7 +73,16 @@ void clawTask(void *ignore)
 
           setClawMotors(motorValue);
           lastSetMotorValue = motorValue;
-          printf("CLAW MOTOR POWER: %d\n",motorValue);
+
+					if(claw.autoOpenTrigger != -1)
+					{
+						if(armGetPosition() > claw.autoOpenTrigger )
+						{
+							claw.holdTarget = claw.autoOpenPos;
+							claw.autoOpenTrigger = -1;
+						}
+					}
+          //printf("CLAW MOTOR POWER: %d\n",motorValue);
       }
 		}
 		delay(20);

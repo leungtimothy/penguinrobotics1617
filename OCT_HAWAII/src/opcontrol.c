@@ -17,6 +17,7 @@
 
 #include "main.h"
 #include "claw.h"
+#include "drive.h"
 
 
 /**
@@ -56,12 +57,12 @@ void operatorControl() {
 		setDrive(RIGHT,joystick_1_3-joystick_1_1);
 		setDrive(STRAFE,joystick_1_4);
 
-		if(joystickGetDigital(1, 5, JOY_UP) && armGetPosition() < 3000)
+		if(joystickGetDigital(1, 5, JOY_UP) && armGetPosition() < 2950)
 		{
 			armHold = 0;
 			setArmMotors(127);
 		}
-		else if(joystickGetDigital(1, 5, JOY_DOWN) && armGetPosition() > 550 )
+		else if(joystickGetDigital(1, 5, JOY_DOWN) && armGetPosition() > 875)
 		{
 			armHold = 0;
 			setArmMotors(-127);
@@ -71,17 +72,17 @@ void operatorControl() {
 			setArmMotors(0);
 			delay(100);
 			armPos = armGetPosition();
-			armHold = 0;
+			armHold = 1;
 		}
 
 		if (joystickGetDigital(1, 8, JOY_UP))
-			armPos = 3000;
+			armPos = 2950;
 		else if (joystickGetDigital(1, 8, JOY_LEFT))
-			armPos = 2000;
+			armPos = 2050;
 		else if (joystickGetDigital(1, 8, JOY_RIGHT))
-			armPos = 1000;
+			armPos = 1250;
 		else if (joystickGetDigital(1, 8, JOY_DOWN))
-			armPos = 525;
+			armPos = 800;
 
 		if (joystickGetDigital(1, 7, JOY_UP))
 			{
@@ -172,9 +173,9 @@ void operatorControl() {
 				#endif
 			}
 		}
-
+			//printf("L Encoder : %d, R Encoder : %d\n",encoderGet(leftEncoder),encoderGet(rightEncoder));
 			//printf("clawpot: %d\n",analogRead(CLAW_POT));
-			//printf("armpot: %d\n",armGetPosition());
+			//printf("armpot: %d clawpot: %d\n",analogRead(ARM_POT),analogRead(CLAW_POT));
 		delay(20);
 	}
 }

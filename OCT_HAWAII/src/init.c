@@ -39,13 +39,20 @@ void initializeIO() {
  *
  * This function must exit relatively promptly, or the oper atorControl() and autonomous() tasks will not start. An autonomous mode selection menu like the pre_auton() in other environments can be implemented in this task if desired.
  */
-    Claw claw;
+ Claw claw;
+ Encoder leftEncoder;
+ Encoder rightEncoder;
 void initialize() {
 	 //gyro = gyroInit(1, 0);
 
     claw.status = HOLDING;
     claw.holdTarget = clawGetPosition();
+    claw.autoOpenPos = 0;
+    claw.autoOpenTrigger -1;
 
     taskCreate(clawTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
     taskCreate(armTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+
+    leftEncoder = encoderInit(LEFT_ENC_1,LEFT_ENC_2,1);
+    rightEncoder = encoderInit(RIGHT_ENC_1,RIGHT_ENC_2,0);
 }

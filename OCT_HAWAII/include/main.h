@@ -57,9 +57,15 @@ extern "C" {
 #define STRAFE 2
 
 #define ARM_POT 2
-#define isArmPotFlipped 1
+#define isArmPotFlipped 0
 #define CLAW_POT 1
 #define isClawPotFlipped 1
+
+#define LEFT_ENC_1 11
+#define LEFT_ENC_2 12
+
+#define RIGHT_ENC_1 1
+#define RIGHT_ENC_2 2
 
 /*  Motor Port and Direction Definitions*/
 #define RIGHT_ARM_OUTSIDE_MOTOR 1
@@ -96,6 +102,8 @@ extern "C" {
 #define JOYSTICK_DEADZONE 10
 
 extern Gyro gyro;
+extern Encoder leftEncoder;
+extern Encoder rightEncoder;
 
 extern int armHold;
 extern int armPos;
@@ -202,7 +210,7 @@ int motorCap(int value);
  */
 void setClawMotors(int value);
 int armGetPosition();
-int clawGetPosition();
+
 
 void clawTask(void *ignore);
 void armTask(void* ignore);

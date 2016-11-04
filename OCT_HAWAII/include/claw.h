@@ -20,6 +20,8 @@ typedef enum{
 typedef struct Claw{
   int holdTarget;
   Claw_Status status;
+	int autoOpenTrigger;
+	int autoOpenPos;
 }Claw;
 
 extern Claw claw;
@@ -31,5 +33,8 @@ extern Claw claw;
 #define MAX_SETPOINT_MOVE_POWER 80
 
 #define CLAW_DEBUG 1
+
+int clawGetPosition();
+void waitUntilClawPos(int pos);
 
 #endif

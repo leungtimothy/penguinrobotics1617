@@ -1,3 +1,4 @@
+
 /**
 * File for autonomous code.
 *
@@ -16,6 +17,8 @@
 ********************************************************************************/
 
 #include "main.h"
+#include "claw.h"
+#include "drive.h"
 
 /**
 * Runs the user autonomous code.
@@ -27,5 +30,102 @@
 * The autonomous task may exit, unlike operatorControl() which should never exit. If it does so, the robot will await a switch to another mode or disable/enable cycle.
 */
 void autonomous() {
+  claw.status = SETPOINT;
+  armHold = 1;
+  drive(BACKWARD,200,60);
+  delay(500);
+  claw.holdTarget=1500;
+  delay(900);
+  claw.holdTarget=3050;
+  delay(700);
+  armPos = 900;
+  delay(500);
+  armPos = 2850;
+  claw.autoOpenPos = 1750;
+  claw.autoOpenTrigger = 2000;
+  drive(BACKWARD,600,127);
+  delay(1000);
+  armPos = 800;
+  delay(1000);
+  drive(FORWARD,500,70);
+  delay(500);
+  claw.holdTarget = 2750;//cube
+  delay(700);
+  armPos = 900;
+  delay(500);
+  armPos = 2850;
+  claw.autoOpenPos = 1750;
+  claw.autoOpenTrigger = 2000;
+  drive(BACKWARD,600,127);
+  delay(1500);
+  armPos = 800;
+  delay(1000);
+  drive(FORWARD,500,70);
+  delay(500);
+  claw.holdTarget = 2750;//cube 2
+  delay(700);
+  armPos = 900;
+  delay(500);
+  armPos = 2850;
+  claw.autoOpenPos = 1750;
+  claw.autoOpenTrigger = 2000;
+  drive(BACKWARD,600,127);
+  delay(1500);
+  armPos = 800;
+  delay(1000);
+  drive(FORWARD,500,70);
+  delay(500);
+  claw.holdTarget = 3000;//stars
+  delay(700);
+  armPos = 900;
+  delay(500);
+  armPos = 2850;
+  claw.autoOpenPos = 1750;
+  claw.autoOpenTrigger = 2000;
+  drive(BACKWARD,600,127);
+  delay(1500);
+  armPos = 800;
+  delay(1000);
+  drive(FORWARD,500,70);
+  delay(500);
 
+
+  /*
+  claw.holdTarget = 1500;
+  waitUntilClawPos(1600);
+  drive(FORWARD,150,70);
+  delay(500);
+  claw.holdTarget = 2500;
+  delay(500);
+  drive(FORWARD,420,60);
+  delay(500);
+  claw.holdTarget = 3050;
+  delay(100);
+  drive(BACKWARD,195,60);
+  delay(250);
+  turn(TURN_LEFT,50,50);
+  delay(500);
+  armPos = 2000;
+  delay(500);
+  drive(FORWARD,400,70);
+  delay(500);//  claw
+  claw.holdTarget = 2000; // Dump 2
+  delay(500);
+  drive(BACKWARD,150,80); // Backup
+  delay(500);
+  armPos = 2000;
+  delay(500);
+  claw.holdTarget = 1600; // Go flat and push
+  delay(1000);
+  drive(FORWARD,250,90);
+  delay(500);
+  armPos = 2300;
+  claw.holdTarget = 2300;
+  delay(500);
+  drive(BACKWARD,500,70);
+  delay(500);
+  armPos = 800;
+  delay(500);
+  turn(TURN_LEFT,400,60);
+  */
 }
