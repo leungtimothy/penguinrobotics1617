@@ -71,7 +71,7 @@ void operatorControl() {
 			setArmMotors(0);
 			delay(100);
 			armPos = armGetPosition();
-			armHold = 1;
+			armHold = 0;
 		}
 
 		if (joystickGetDigital(1, 8, JOY_UP))
@@ -82,6 +82,27 @@ void operatorControl() {
 			armPos = 1000;
 		else if (joystickGetDigital(1, 8, JOY_DOWN))
 			armPos = 525;
+
+		if (joystickGetDigital(1, 7, JOY_UP))
+			{
+					claw.status = SETPOINT;
+					claw.holdTarget = 4050;
+			}
+		else if (joystickGetDigital(1, 7, JOY_LEFT))
+			{
+
+			}
+		else if (joystickGetDigital(1, 7, JOY_RIGHT))
+			{
+					claw.status = SETPOINT;
+					claw.holdTarget = 1500;
+
+			}
+		else if (joystickGetDigital(1, 7, JOY_DOWN))
+			{
+					claw.status = SETPOINT;
+					claw.holdTarget = 2400;
+			}
 
 		if(joystickGetDigital(1, 6, JOY_UP) && clawButtonStatus == NOT_PRESSED && clawGetPosition() < 4000)
  		{

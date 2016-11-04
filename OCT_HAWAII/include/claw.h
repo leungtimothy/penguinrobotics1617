@@ -24,9 +24,11 @@ typedef struct Claw{
 
 extern Claw claw;
 
-#define CLAW_KP 0.4
+#define CLAW_HOLD_KP 0.4
+#define CLAW_MOVE_KP 0.2
 #define CLAW_IS_MOVING_THRESHOLD 75
 #define MAX_HOLD_POWER 30
+#define MAX_SETPOINT_MOVE_POWER 80
 
 #define CLAW_DEBUG 1
 

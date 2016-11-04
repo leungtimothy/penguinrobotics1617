@@ -30,8 +30,12 @@ void clawTask(void *ignore)
 		if(claw.status == HOLDING || claw.status == SETPOINT)
 		{
 			int error = claw.holdTarget - clawGetPosition();
+			int motorValue;
 
-      int motorValue = motorCap(error*CLAW_KP);
+			if(claw.status == HOLDING)
+      	motorValue = motorCap(error*CLAW_HOLD_KP);
+			else if(claw.status == SETPOINT)
+				motorValue = motorCap(error*CLAW_MOVE_KP);
 
       if(motorValue != lastSetMotorValue)
       {
@@ -40,12 +44,21 @@ void clawTask(void *ignore)
               if(motorValue >0 && motorValue > MAX_HOLD_POWER)
                 motorValue = MAX_HOLD_POWER;
               else if(motorValue < 0 && motorValue < -MAX_HOLD_POWER)
-                motorValue = MAX_HOLD_POWER;
+                motorValue = -MAX_HOLD_POWER;
           }
+					else if(claw.status == SETPOINT)
+					{
+						if(motorValue >0 && motorValue > MAX_SETPOINT_MOVE_POWER)
+							motorValue = MAX_SETPOINT_MOVE_POWER;
+						else if(motorValue < 0 && motorValue < -MAX_SETPOINT_MOVE_POWER)
+							motorValue = -MAX_SETPOINT_MOVE_POWER;
+					}
+
+
 
           setClawMotors(motorValue);
           lastSetMotorValue = motorValue;
-          printf("CLAW MOTOR POWER: %d",motorValue);
+          printf("CLAW MOTOR POWER: %d\n",motorValue);
       }
 		}
 		delay(20);
