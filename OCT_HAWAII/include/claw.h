@@ -36,5 +36,14 @@ extern Claw claw;
 
 int clawGetPosition();
 void waitUntilClawPos(int pos);
+/**
+ * Use this function to set the speed of the claw motor.
+ *
+ * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
+ * being off. If the value is > 127 or < -127, it will be rounded.
+ *
+ */
+void setClawMotors(int value);
+void clawTask(void *ignore);
 
 #endif

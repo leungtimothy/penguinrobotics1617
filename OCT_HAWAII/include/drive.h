@@ -15,6 +15,9 @@ typedef enum {
 
 
 int drive(Direction dir, int distance, int power);
+void driveADP(int dir, int distance, int maxPower, int timeout,float acclerationConst,float decclerationConst);
+void driveAP(int dir, int distance, int maxPower, int timeout,float acclerationConst);
+void driveDP(int dir, int distance, int maxPower, int timeout,float decclerationConst);
 void setDrive(int motor_location, int value);
 
 int turn(Direction dir, int distance, int power);

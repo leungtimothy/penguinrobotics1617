@@ -19,6 +19,7 @@
 #include "main.h"
 #include "claw.h"
 #include "drive.h"
+#include "arm.h"
 
 /**
 * Runs the user autonomous code.
@@ -30,6 +31,31 @@
 * The autonomous task may exit, unlike operatorControl() which should never exit. If it does so, the robot will await a switch to another mode or disable/enable cycle.
 */
 void autonomous() {
+  //analogCalibrate(3);
+
+  claw.status = SETPOINT;
+  claw.holdTarget = 1800;
+  driveDP(-1, 190, 127, 5000,0.4);
+  delay(1500);
+  driveADP(1,100,70,5000,1.5,1.5);
+  delay(1500);
+  claw.status = SETPOINT;
+  claw.holdTarget = 1050;
+  delay(1000);
+  armPos = 1000;
+  delay(500);
+  armPos = 2300;
+  driveADP(-1,850,127,5000,1.5,1.5);
+
+    claw.autoOpenPos = 2800;
+    claw.autoOpenTrigger = 1550;
+
+  //driveAP(int dir, int distance, int maxPower, int timeout,float acclerationConst = 0.3);;
+  //claw.autoOpenPos = 1750;
+  //claw.autoOpenTrigger = 2000;
+  delay(20000);
+
+/*
   claw.status = SETPOINT;
   armHold = 1;
   drive(BACKWARD,200,60);
@@ -89,7 +115,7 @@ void autonomous() {
   drive(FORWARD,500,70);
   delay(500);
 
-
+*/
   /*
   claw.holdTarget = 1500;
   waitUntilClawPos(1600);

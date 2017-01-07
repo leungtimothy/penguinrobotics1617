@@ -17,6 +17,7 @@
 
 #include "main.h"
 #include "claw.h"
+#include "arm.h"
 
 Gyro gyro;
 
@@ -42,8 +43,12 @@ void initializeIO() {
  Claw claw;
  Encoder leftEncoder;
  Encoder rightEncoder;
+// RobotMode robotMode;
 void initialize() {
 	 //gyro = gyroInit(1, 0);
+   //  robotMode = STANDARD_MODE;
+
+    analogCalibrate(3);
 
     claw.status = HOLDING;
     claw.holdTarget = clawGetPosition();

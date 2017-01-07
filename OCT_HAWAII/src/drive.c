@@ -11,7 +11,7 @@
 void setDrive(int motor_location, int value)
 {
 	// Verify motor value is between -127 and 127;
-	value = motorCap(value);
+	value = motorCap(value,127);
 
 	// Choose the motor port(s) to set
 	switch(motor_location)
@@ -25,8 +25,8 @@ void setDrive(int motor_location, int value)
 			break;
 
 		case STRAFE:
-			motorSet(STRAFE_FRONT,value*MOTOR_3_DIR);
-			motorSet(STRAFE_REAR,value*MOTOR_10_DIR);
+		//	motorSet(STRAFE_FRONT,value*MOTOR_3_DIR);
+		//	motorSet(STRAFE_REAR,value*MOTOR_10_DIR);
 			break;
 
 		default:
@@ -118,4 +118,99 @@ int turn(Direction dir, int distance, int power)
 	setDrive(RIGHT, 0);
 
 	return 1;
+}
+
+void driveADP(int dir, int distance, int maxPower, int timeout,float acclerationConst,float decclerationConst)
+{
+	int minMovePower = 30;
+	int brakeValue = -10;
+
+	int time = millis();
+
+	encoderReset(leftEncoder);
+  encoderReset(rightEncoder);
+
+	while(abs((encoderGet(rightEncoder) + encoderGet(leftEncoder)) /2) < distance/2 && (millis() - time)  < timeout)
+	{
+			int leftRightError = encoderGet(leftEncoder) - encoderGet(rightEncoder);
+			int accleration = abs((encoderGet(leftEncoder)+ encoderGet(rightEncoder)) /2)* acclerationConst;
+
+			setDrive(LEFT, dir*motorCap(minMovePower + accleration, maxPower) - leftRightError);
+			setDrive(RIGHT, dir*motorCap(minMovePower + accleration, maxPower) + leftRightError);
+
+	}
+
+	while(abs((encoderGet(leftEncoder)+encoderGet(rightEncoder)) /2) < distance  && (millis() - time) < timeout)
+	{
+			int leftRightError = encoderGet(leftEncoder) - encoderGet(rightEncoder);
+			int deccleration = (distance - ((encoderGet(leftEncoder)+encoderGet(rightEncoder)) /2)) * (decclerationConst);
+
+			setDrive(LEFT, dir*motorCap(minMovePower + deccleration, maxPower) - leftRightError);
+			setDrive(RIGHT, dir*motorCap(minMovePower + deccleration, maxPower) + leftRightError);
+
+	}
+	setDrive(LEFT,dir*-brakeValue);
+	setDrive(RIGHT,dir*-brakeValue);
+}
+
+void driveAP(int dir, int distance, int maxPower, int timeout,float acclerationConst)
+{
+
+	int minMovePower = 30;
+	int brakeValue = -10;
+
+	int time = millis();
+
+	encoderReset(leftEncoder);
+  encoderReset(rightEncoder);
+
+	while(abs((encoderGet(rightEncoder) + encoderGet(leftEncoder)) /2) < distance && (millis() - time)  < timeout)
+	{
+			int leftRightError = encoderGet(leftEncoder) - encoderGet(rightEncoder);
+			int accleration = abs((encoderGet(leftEncoder)+ encoderGet(rightEncoder)) /2)* acclerationConst;
+
+			setDrive(LEFT, dir*motorCap(minMovePower + accleration, maxPower) - leftRightError);
+			setDrive(RIGHT, dir*motorCap(minMovePower + accleration, maxPower) + leftRightError);
+
+	}
+	setDrive(LEFT,dir*-brakeValue);
+	setDrive(RIGHT,dir*-brakeValue);
+}
+
+void driveDP(int dir, int distance, int maxPower, int timeout,float decclerationConst)
+{
+	int minMovePower = 30;
+	int brakeValue = -10;
+
+	int time = millis();
+
+	encoderReset(leftEncoder);
+  encoderReset(rightEncoder);
+
+
+	while(abs((encoderGet(leftEncoder)+encoderGet(rightEncoder)) /2) < distance  && (millis() - time) < timeout)
+	{
+			int leftRightError = encoderGet(leftEncoder) - encoderGet(rightEncoder);
+			int deccleration = (distance - ((encoderGet(leftEncoder)+encoderGet(rightEncoder)) /2)) * (decclerationConst);
+
+			setDrive(LEFT, dir*motorCap(minMovePower + deccleration, maxPower) - leftRightError);
+			setDrive(RIGHT, dir*motorCap(minMovePower + deccleration, maxPower) + leftRightError);
+
+	}
+	setDrive(LEFT,dir*-brakeValue);
+	setDrive(RIGHT,dir*-brakeValue);
+}
+
+
+void turnadsfds(int degree, int power)
+{
+	/*
+		int initialGyroReading = analogReadCalibratedHR(3);
+
+		while(initialGyroReading - analogReadCalibratedHR(3) < degree)
+		{
+			degree
+
+		}
+*/
 }

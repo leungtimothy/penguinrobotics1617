@@ -18,6 +18,7 @@
 #include "main.h"
 #include "claw.h"
 #include "drive.h"
+#include "arm.h"
 
 
 /**
@@ -34,13 +35,18 @@
 void operatorControl() {
 	armHold = 1;
 	armPos = armGetPosition();
+	claw.status = MOVING;
 	claw.holdTarget = clawGetPosition();
+
 
 	ClawButtonStatus clawButtonStatus = NOT_PRESSED;
 
 	while (true)
 	{
-		int joystick_1_1 = joystickGetAnalog(1, 1);
+
+		analogReadCalibratedHR(3);
+
+		int joystick_1_2 = joystickGetAnalog(1, 2);
 		int joystick_1_3 = joystickGetAnalog(1, 3);
 		int joystick_1_4 = joystickGetAnalog(1, 4);
 
@@ -50,22 +56,22 @@ void operatorControl() {
 		if (abs(joystick_1_4) < JOYSTICK_DEADZONE)
 			joystick_1_4 = 0;
 
-		if (abs(joystick_1_1) < JOYSTICK_DEADZONE)
-			joystick_1_1 = 0;
+		if (abs(joystick_1_2) < JOYSTICK_DEADZONE)
+			joystick_1_2 = 0;
 
-		setDrive(LEFT,joystick_1_3+joystick_1_1);
-		setDrive(RIGHT,joystick_1_3-joystick_1_1);
-		setDrive(STRAFE,joystick_1_4);
+		setDrive(LEFT,joystick_1_3);//+joystick_1_1);
+		setDrive(RIGHT,joystick_1_2);//-joystick_1_1);
+		//setDrive(STRAFE,joystick_1_4);
 
-		if(joystickGetDigital(1, 5, JOY_UP) && armGetPosition() < 2950)
+		if(joystickGetDigital(1, 5, JOY_UP) && armGetPosition() < 3050)
 		{
 			armHold = 0;
 			setArmMotors(127);
 		}
-		else if(joystickGetDigital(1, 5, JOY_DOWN) && armGetPosition() > 875)
+		else if(joystickGetDigital(1, 5, JOY_DOWN) && !armLowerLimitGetStatus())
 		{
 			armHold = 0;
-			setArmMotors(-127);
+			setArmMotors(-80);
 		}
 		else if(!armHold)
 		{
@@ -76,33 +82,39 @@ void operatorControl() {
 		}
 
 		if (joystickGetDigital(1, 8, JOY_UP))
-			armPos = 2950;
+		{
+			// 7claw.autoOpenPos = 1750;
+			//claw.autoOpenTrigger = 2000;
+			//claw.status = SETPOINT;
+			armPos = 2075;
+		}
 		else if (joystickGetDigital(1, 8, JOY_LEFT))
-			armPos = 2050;
+			armPos = 1425;
 		else if (joystickGetDigital(1, 8, JOY_RIGHT))
-			armPos = 1250;
+			armPos = 545;
 		else if (joystickGetDigital(1, 8, JOY_DOWN))
-			armPos = 800;
+			armPos = 271;
 
 		if (joystickGetDigital(1, 7, JOY_UP))
 			{
 					claw.status = SETPOINT;
-					claw.holdTarget = 4050;
+					claw.holdTarget = 2450;
 			}
 		else if (joystickGetDigital(1, 7, JOY_LEFT))
 			{
-
+					claw.status = SETPOINT;
+					claw.holdTarget = 2040;
 			}
 		else if (joystickGetDigital(1, 7, JOY_RIGHT))
 			{
 					claw.status = SETPOINT;
-					claw.holdTarget = 1500;
+					claw.holdTarget = 1550;
 
 			}
 		else if (joystickGetDigital(1, 7, JOY_DOWN))
 			{
 					claw.status = SETPOINT;
-					claw.holdTarget = 2400;
+					claw.holdTarget = 880;
 			}
 
 		if(joystickGetDigital(1, 6, JOY_UP) && clawButtonStatus == NOT_PRESSED && clawGetPosition() < 4000)
@@ -115,7 +127,7 @@ void operatorControl() {
 				printf("Claw status: START OPENING\n");
 			#endif
 		}
- 		else if(joystickGetDigital(1, 6, JOY_DOWN) && clawButtonStatus == NOT_PRESSED && clawGetPosition() >0)
+ 		else if(joystickGetDigital(1, 6, JOY_DOWN) && clawButtonStatus == NOT_PRESSED )//&& clawGetPosition() > 0)
  		{
  			claw.status = MOVING;
 			clawButtonStatus = CLOSE;
@@ -127,9 +139,23 @@ void operatorControl() {
  		}
  		else if((clawButtonStatus == CLOSE && !joystickGetDigital(1, 6, JOY_DOWN)) || (clawButtonStatus == OPEN && !joystickGetDigital(1, 6, JOY_UP)))
  		{
-			claw.holdTarget = clawGetPosition();
-			setClawMotors(0);
+
+			if(clawButtonStatus == CLOSE && clawGetPosition() > 0)
+			{
+				printf("CLAW HOLD\n");
+				setClawMotors(-20);
+			}
+			else
+			{
+				printf("CLAW NOHOLD\n");
+				setClawMotors(0);
+			}
+
 			clawButtonStatus = NOT_PRESSED;
+		}
+			/*
+			claw.holdTarget = clawGetPosition();
+Y
 
 			#ifdef CLAW_DEBUG
 				printf("Claw status: STOP MOTORS AND CHECK IF STATIONARY\n");
@@ -172,10 +198,10 @@ void operatorControl() {
 					printf("CLAW STATUS: STATIONARY\n");
 				#endif
 			}
-		}
+		}*/
 			//printf("L Encoder : %d, R Encoder : %d\n",encoderGet(leftEncoder),encoderGet(rightEncoder));
 			//printf("clawpot: %d\n",analogRead(CLAW_POT));
-			//printf("armpot: %d clawpot: %d\n",analogRead(ARM_POT),analogRead(CLAW_POT));
+			printf("armpot: %d clawpot: %d\n",analogRead(ARM_POT),analogRead(CLAW_POT));
 		delay(20);
 	}
 }

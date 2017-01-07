@@ -56,26 +56,31 @@ extern "C" {
 #define RIGHT 1
 #define STRAFE 2
 
+/* Analog Ports */
 #define ARM_POT 2
 #define isArmPotFlipped 0
+
 #define CLAW_POT 1
 #define isClawPotFlipped 1
 
+/* Digital Ports */
 #define LEFT_ENC_1 11
 #define LEFT_ENC_2 12
 
 #define RIGHT_ENC_1 1
 #define RIGHT_ENC_2 2
 
+#define LOWER_ARM_LIMIT_BUTTON 3
+
 /*  Motor Port and Direction Definitions*/
 #define RIGHT_ARM_OUTSIDE_MOTOR 1
-#define MOTOR_1_DIR 1
+#define MOTOR_1_DIR -1
 
 #define CLAW_MOTOR 2
 #define MOTOR_2_DIR 1
 
-#define STRAFE_FRONT 3
-#define MOTOR_3_DIR -1
+#define RIGHT_ARM_INSIDE_MOTOR_TOP 3
+#define MOTOR_3_DIR 1
 
 #define LEFT_ARM_MOTOR 4
 #define MOTOR_4_DIR 1
@@ -95,8 +100,8 @@ extern "C" {
 #define CLAW_MOTOR_2 9
 #define MOTOR_9_DIR -1
 
-#define STRAFE_REAR 10
-#define MOTOR_10_DIR -1
+#define LEFT_ARM_MOTOR_INSIDE_TOP 10
+#define MOTOR_10_DIR 1
 /*  End Motor Port and Direction Definitions*/
 
 #define JOYSTICK_DEADZONE 10
@@ -104,9 +109,37 @@ extern "C" {
 extern Gyro gyro;
 extern Encoder leftEncoder;
 extern Encoder rightEncoder;
+/*
+typedef enum {
+	HANG_MODE,
+	STANDARD_MODE
+} MODE;
 
-extern int armHold;
-extern int armPos;
+typedef struct RobotMode{
+  int armMultiplier;
+  int driveMultiplier;
+  MODE mode;
+};
+
+RobotMode robotmode;
+
+void updateMode(RobotMode* robotMode, MODE mode)
+{
+    robotMode->mode = mode;
+
+    switch(robotMode->mode)
+    {
+      case HANG_MODE:
+          robotMode->armMultiplier = 1;
+          robotMode->driveMultiplier = 0.5;
+        break;
+      case STANDARD_MODE:
+
+          robotMode->armMultiplier = 0.7;
+          robotMode->driveMultiplier = 1;
+        break;
+    }
+}*/
 
 //#define AUTO_DEBUG
 
@@ -199,23 +232,9 @@ void setArmMotors(int value);
  *@param value of the motor
  *@return value of the motor between -127 to 127
  */
-int motorCap(int value);
+int motorCap(int value, int maxValue);
+int customMotorCap(int value, int lower, int upper);
 
-/**
- * Use this function to set the speed of the claw motor.
- *
- * @param value the new signed speed; -127 is full reverse and 127 is full forward, with 0
- * being off. If the value is > 127 or < -127, it will be rounded.
- *
- */
-void setClawMotors(int value);
-int armGetPosition();
-
-
-void clawTask(void *ignore);
-void armTask(void* ignore);
-
-void hey();
 
 /* --- END FUNCTION PROTOTYPES --- */
 
